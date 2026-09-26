@@ -25,9 +25,10 @@
         }
 
         #timer,
-        #score {
+        #score,
+        #lives {
             font-size: 24px;
-            margin: 15px;
+            margin: 12px;
         }
 
         #gameArea {
@@ -72,6 +73,8 @@
 
     <p id="score">🏆 Score: 0</p>
 
+    <p id="lives">❤️ Lives: 3</p>
+
     <button id="startButton">START GAME</button>
 
     <div id="gameArea">
@@ -82,12 +85,14 @@
 
         let timeLeft = 5;
         let score = 0;
+        let lives = 3;
         let gameTimer;
         let gameRunning = false;
 
         const challenge = document.getElementById("challenge");
         const timer = document.getElementById("timer");
         const scoreDisplay = document.getElementById("score");
+        const livesDisplay = document.getElementById("lives");
         const startButton = document.getElementById("startButton");
         const target = document.getElementById("target");
         const gameArea = document.getElementById("gameArea");
@@ -104,6 +109,19 @@
             target.style.top = randomY + "px";
         }
 
+        function endGame(message) {
+
+            clearInterval(gameTimer);
+
+            gameRunning = false;
+
+            target.style.display = "none";
+
+            challenge.textContent = message;
+
+            startButton.textContent = "PLAY AGAIN";
+        }
+
         startButton.addEventListener("click", function () {
 
             if (gameRunning) {
@@ -112,10 +130,13 @@
 
             timeLeft = 5;
             score = 0;
+            lives = 3;
+
             gameRunning = true;
 
-            scoreDisplay.textContent = "🏆 Score: 0";
             timer.textContent = "⏱️ Time: 5";
+            scoreDisplay.textContent = "🏆 Score: 0";
+            livesDisplay.textContent = "❤️ Lives: 3";
 
             challenge.textContent =
                 "🎯 CLICK THE TARGET!";
@@ -138,17 +159,10 @@
 
                 if (timeLeft <= 0) {
 
-                    clearInterval(gameTimer);
+                    endGame(
+                        "💥 TIME'S UP! FINAL SCORE: " + score
+                    );
 
-                    gameRunning = false;
-
-                    target.style.display = "none";
-
-                    challenge.textContent =
-                        "💥 TIME'S UP! FINAL SCORE: " + score;
-
-                    startButton.textContent =
-                        "PLAY AGAIN";
                 }
 
             }, 1000);
@@ -170,6 +184,34 @@
                 "🔥 NICE! +100";
 
             moveTarget();
+
+        });
+
+        gameArea.addEventListener("click", function (event) {
+
+            if (!gameRunning) {
+                return;
+            }
+
+            if (event.target === target) {
+                return;
+            }
+
+            lives--;
+
+            livesDisplay.textContent =
+                "❤️ Lives: " + lives;
+
+            challenge.textContent =
+                "❌ MISSED! -1 LIFE";
+
+            if (lives <= 0) {
+
+                endGame(
+                    "💀 GAME OVER! FINAL SCORE: " + score
+                );
+
+            }
 
         });
 
