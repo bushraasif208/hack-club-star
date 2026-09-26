@@ -59,22 +59,30 @@
         let gameTimer;
         let gameRunning = false;
 
+        const challenges = [
+            "⚡ CLICK AS FAST AS YOU CAN!",
+            "🖱️ GET AS MANY CLICKS AS POSSIBLE!",
+            "🎯 SCORE 500 POINTS!",
+            "🚀 CLICK BEFORE TIME RUNS OUT!"
+        ];
+
         const challenge = document.getElementById("challenge");
         const timer = document.getElementById("timer");
         const scoreDisplay = document.getElementById("score");
         const startButton = document.getElementById("startButton");
 
-        // Start the game
         startButton.addEventListener("click", function () {
 
-            // If game is running, give points
+            // If game is running, add points
             if (gameRunning) {
 
                 score += 100;
 
-                scoreDisplay.textContent = "🏆 Score: " + score;
+                scoreDisplay.textContent =
+                    "🏆 Score: " + score;
 
-                challenge.textContent = "🔥 GREAT CLICK! +100";
+                challenge.textContent =
+                    "🔥 GREAT CLICK! +100";
 
                 return;
             }
@@ -84,22 +92,31 @@
             score = 0;
             gameRunning = true;
 
-            scoreDisplay.textContent = "🏆 Score: " + score;
+            scoreDisplay.textContent =
+                "🏆 Score: 0";
+
+            // Pick a random challenge
+            const randomIndex =
+                Math.floor(Math.random() * challenges.length);
 
             challenge.textContent =
-                "⚡ CLICK THE BUTTON AS FAST AS YOU CAN!";
+                challenges[randomIndex];
 
-            startButton.textContent = "CLICK ME!";
+            startButton.textContent =
+                "CLICK ME!";
 
-            timer.textContent = "⏱️ Time: " + timeLeft;
+            timer.textContent =
+                "⏱️ Time: " + timeLeft;
 
             clearInterval(gameTimer);
 
+            // Countdown
             gameTimer = setInterval(function () {
 
                 timeLeft--;
 
-                timer.textContent = "⏱️ Time: " + timeLeft;
+                timer.textContent =
+                    "⏱️ Time: " + timeLeft;
 
                 if (timeLeft <= 0) {
 
@@ -110,7 +127,8 @@
                     challenge.textContent =
                         "💥 TIME'S UP! FINAL SCORE: " + score;
 
-                    startButton.textContent = "PLAY AGAIN";
+                    startButton.textContent =
+                        "PLAY AGAIN";
                 }
 
             }, 1000);
