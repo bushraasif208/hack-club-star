@@ -12,7 +12,7 @@
             text-align: center;
             background: #111;
             color: white;
-            padding: 40px 20px;
+            padding: 30px 20px;
         }
 
         h1 {
@@ -21,7 +21,25 @@
 
         #challenge {
             font-size: 30px;
-            margin: 40px 0;
+            margin: 25px 0;
+        }
+
+        #timer,
+        #score {
+            font-size: 24px;
+            margin: 15px;
+        }
+
+        #gameArea {
+            position: relative;
+            width: 90%;
+            max-width: 700px;
+            height: 350px;
+            margin: 30px auto;
+            border: 3px solid white;
+            border-radius: 15px;
+            background: #222;
+            overflow: hidden;
         }
 
         button {
@@ -32,10 +50,14 @@
             border-radius: 10px;
         }
 
-        #timer,
-        #score {
-            font-size: 24px;
-            margin: 15px;
+        #target {
+            display: none;
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            font-size: 30px;
+            padding: 0;
         }
     </style>
 </head>
@@ -52,6 +74,10 @@
 
     <button id="startButton">START GAME</button>
 
+    <div id="gameArea">
+        <button id="target">🎯</button>
+    </div>
+
     <script>
 
         let timeLeft = 5;
@@ -59,58 +85,50 @@
         let gameTimer;
         let gameRunning = false;
 
-        const challenges = [
-            "⚡ CLICK AS FAST AS YOU CAN!",
-            "🖱️ GET AS MANY CLICKS AS POSSIBLE!",
-            "🎯 SCORE 500 POINTS!",
-            "🚀 CLICK BEFORE TIME RUNS OUT!"
-        ];
-
         const challenge = document.getElementById("challenge");
         const timer = document.getElementById("timer");
         const scoreDisplay = document.getElementById("score");
         const startButton = document.getElementById("startButton");
+        const target = document.getElementById("target");
+        const gameArea = document.getElementById("gameArea");
+
+        function moveTarget() {
+
+            const maxX = gameArea.clientWidth - target.offsetWidth;
+            const maxY = gameArea.clientHeight - target.offsetHeight;
+
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+
+            target.style.left = randomX + "px";
+            target.style.top = randomY + "px";
+        }
 
         startButton.addEventListener("click", function () {
 
-            // If game is running, add points
             if (gameRunning) {
-
-                score += 100;
-
-                scoreDisplay.textContent =
-                    "🏆 Score: " + score;
-
-                challenge.textContent =
-                    "🔥 GREAT CLICK! +100";
-
                 return;
             }
 
-            // Reset game
             timeLeft = 5;
             score = 0;
             gameRunning = true;
 
-            scoreDisplay.textContent =
-                "🏆 Score: 0";
-
-            // Pick a random challenge
-            const randomIndex =
-                Math.floor(Math.random() * challenges.length);
+            scoreDisplay.textContent = "🏆 Score: 0";
+            timer.textContent = "⏱️ Time: 5";
 
             challenge.textContent =
-                challenges[randomIndex];
+                "🎯 CLICK THE TARGET!";
 
             startButton.textContent =
-                "CLICK ME!";
+                "GAME RUNNING...";
 
-            timer.textContent =
-                "⏱️ Time: " + timeLeft;
+            target.style.display = "block";
+
+            moveTarget();
 
             clearInterval(gameTimer);
 
-            // Countdown
             gameTimer = setInterval(function () {
 
                 timeLeft--;
@@ -124,6 +142,8 @@
 
                     gameRunning = false;
 
+                    target.style.display = "none";
+
                     challenge.textContent =
                         "💥 TIME'S UP! FINAL SCORE: " + score;
 
@@ -132,6 +152,24 @@
                 }
 
             }, 1000);
+
+        });
+
+        target.addEventListener("click", function () {
+
+            if (!gameRunning) {
+                return;
+            }
+
+            score += 100;
+
+            scoreDisplay.textContent =
+                "🏆 Score: " + score;
+
+            challenge.textContent =
+                "🔥 NICE! +100";
+
+            moveTarget();
 
         });
 
