@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,25 +57,40 @@
         let timeLeft = 5;
         let score = 0;
         let gameTimer;
+        let gameRunning = false;
 
         const challenge = document.getElementById("challenge");
         const timer = document.getElementById("timer");
         const scoreDisplay = document.getElementById("score");
         const startButton = document.getElementById("startButton");
 
+        // Start the game
         startButton.addEventListener("click", function () {
 
-            // Reset timer
-            timeLeft = 5;
+            // If game is running, give points
+            if (gameRunning) {
 
-            // Show challenge
+                score += 100;
+
+                scoreDisplay.textContent = "🏆 Score: " + score;
+
+                challenge.textContent = "🔥 GREAT CLICK! +100";
+
+                return;
+            }
+
+            // Reset game
+            timeLeft = 5;
+            score = 0;
+            gameRunning = true;
+
+            scoreDisplay.textContent = "🏆 Score: " + score;
+
             challenge.textContent =
                 "⚡ CLICK THE BUTTON AS FAST AS YOU CAN!";
 
-            // Change button
             startButton.textContent = "CLICK ME!";
 
-            // Start countdown
             timer.textContent = "⏱️ Time: " + timeLeft;
 
             clearInterval(gameTimer);
@@ -91,7 +105,10 @@
 
                     clearInterval(gameTimer);
 
-                    challenge.textContent = "💥 TIME'S UP!";
+                    gameRunning = false;
+
+                    challenge.textContent =
+                        "💥 TIME'S UP! FINAL SCORE: " + score;
 
                     startButton.textContent = "PLAY AGAIN";
                 }
