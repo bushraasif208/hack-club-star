@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,23 +11,32 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background: #f4f4f4;
-            padding: 50px;
+            background: #111;
+            color: white;
+            padding: 40px 20px;
         }
 
         h1 {
             font-size: 45px;
         }
 
+        #challenge {
+            font-size: 30px;
+            margin: 40px 0;
+        }
+
         button {
             padding: 15px 30px;
             font-size: 20px;
             cursor: pointer;
+            border: none;
+            border-radius: 10px;
         }
 
-        #message {
+        #timer,
+        #score {
             font-size: 24px;
-            margin-top: 30px;
+            margin: 15px;
         }
     </style>
 </head>
@@ -35,20 +45,62 @@
 
     <h1>🎮 WarioWare AI</h1>
 
-    <p>Welcome to the mini-game challenge!</p>
+    <p id="challenge">Welcome to the mini-game challenge!</p>
 
-    <button onclick="startGame()">START GAME</button>
+    <p id="timer">⏱️ Time: 5</p>
 
-    <p id="message"></p>
+    <p id="score">🏆 Score: 0</p>
+
+    <button id="startButton">START GAME</button>
 
     <script>
-        function startGame() {
-            document.getElementById("message").innerText =
-                "🚀 Your challenge is starting!";
-        }
+
+        let timeLeft = 5;
+        let score = 0;
+        let gameTimer;
+
+        const challenge = document.getElementById("challenge");
+        const timer = document.getElementById("timer");
+        const scoreDisplay = document.getElementById("score");
+        const startButton = document.getElementById("startButton");
+
+        startButton.addEventListener("click", function () {
+
+            // Reset timer
+            timeLeft = 5;
+
+            // Show challenge
+            challenge.textContent =
+                "⚡ CLICK THE BUTTON AS FAST AS YOU CAN!";
+
+            // Change button
+            startButton.textContent = "CLICK ME!";
+
+            // Start countdown
+            timer.textContent = "⏱️ Time: " + timeLeft;
+
+            clearInterval(gameTimer);
+
+            gameTimer = setInterval(function () {
+
+                timeLeft--;
+
+                timer.textContent = "⏱️ Time: " + timeLeft;
+
+                if (timeLeft <= 0) {
+
+                    clearInterval(gameTimer);
+
+                    challenge.textContent = "💥 TIME'S UP!";
+
+                    startButton.textContent = "PLAY AGAIN";
+                }
+
+            }, 1000);
+
+        });
+
     </script>
 
 </body>
-    <p id="timer">⏱️ Time: 5</p>
-<p id="score">🏆 Score: 0</p>
 </html>
