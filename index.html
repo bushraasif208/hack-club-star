@@ -3,12 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hack Club Start</title>
+
+    <title>WarioWare AI</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f4f4f4;
+            padding: 50px;
+        }
+
+        h1 {
+            font-size: 45px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        #message {
+            font-size: 24px;
+            margin-top: 30px;
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>Hack Club Start</h1>
-    <p>My first Hack Club project!</p>
+    <h1>🎮 WarioWare AI</h1>
+
+    <p>Welcome to the mini-game challenge!</p>
+
+    <button onclick="startGame()">START GAME</button>
+
+    <p id="message"></p>
+
+    <script>
+        function startGame() {
+            document.getElementById("message").innerText =
+                "🚀 Your challenge is starting!";
+        }
+    </script>
 
 </body>
 </html>
