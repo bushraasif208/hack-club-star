@@ -1,919 +1,584 @@
 ```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WarioWare AI — Arcade Edition</title>
 
-    <title>WarioWare AI</title>
+<style>
+* {
+    box-sizing: border-box;
+}
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background: linear-gradient(135deg, #ff4ecd, #6c2cff);
-            color: white;
-        }
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    background:
+        radial-gradient(circle at 20% 20%, #ff2bd6 0, transparent 30%),
+        radial-gradient(circle at 80% 80%, #5b2cff 0, transparent 35%),
+        #090014;
+    overflow: hidden;
+}
 
-        h1 {
-            font-size: 42px;
-        }
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
 
-        button {
-            padding: 15px 25px;
-            margin: 10px;
-            border: none;
-            border-radius: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+/* ================= HOME ================= */
 
-        .game-button {
-            display: block;
-            width: 300px;
-            margin: 15px auto;
-        }
+#home {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
 
-        #gameScreen {
-            display: none;
-        }
+.homeBox {
+    width: min(700px, 92%);
+    padding: 45px 25px;
+    border: 2px solid rgba(255,255,255,.2);
+    border-radius: 30px;
+    background: rgba(10,5,25,.72);
+    box-shadow: 0 0 60px rgba(255,0,220,.25);
+}
 
-        .game {
-            display: none;
-            background: rgba(0,0,0,0.25);
-            padding: 30px;
-            margin: 30px auto;
-            max-width: 650px;
-            min-height: 300px;
-            border-radius: 25px;
-        }
+.logo {
+    font-size: clamp(45px, 9vw, 85px);
+    font-weight: 1000;
+    margin: 0;
+    letter-spacing: -5px;
+}
 
-        .active {
-            display: block;
-        }
+.logo span {
+    color: #ff39d7;
+}
 
-        #target {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: lime;
-            position: fixed;
-            display: none;
-        }
+.tagline {
+    font-size: 20px;
+    color: #cfc3e8;
+}
 
-        .red {
-            background: red;
-            color: white;
-        }
+.startButton {
+    margin-top: 25px;
+    padding: 18px 50px;
+    border: 0;
+    border-radius: 50px;
+    background: white;
+    color: #160020;
+    font-size: 22px;
+    font-weight: 900;
+    box-shadow: 0 0 30px rgba(255,255,255,.25);
+    transition: .15s;
+}
 
-        .safe {
-            background: limegreen;
-            color: white;
-        }
+.startButton:hover {
+    transform: scale(1.08);
+}
 
-        #patternDisplay {
-            font-size: 50px;
-            margin: 30px;
-        }
+/* ================= GAME ================= */
 
-        #message {
-            font-size: 25px;
-            font-weight: bold;
-        }
-    </style>
+#game {
+    display: none;
+    min-height: 100vh;
+    position: relative;
+}
+
+.topBar {
+    height: 75px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: rgba(0,0,0,.35);
+    border-bottom: 1px solid rgba(255,255,255,.15);
+    font-weight: 900;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat small {
+    display: block;
+    color: #aaa;
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.stat strong {
+    font-size: 22px;
+}
+
+#combo {
+    color: #ff45dc;
+}
+
+#arena {
+    min-height: calc(100vh - 75px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 25px;
+}
+
+#challenge {
+    width: min(850px, 95%);
+    min-height: 520px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.microNumber {
+    color: #aaa;
+    font-weight: 900;
+    letter-spacing: 4px;
+    font-size: 13px;
+}
+
+#title {
+    font-size: clamp(32px, 7vw, 65px);
+    font-weight: 1000;
+    margin: 10px;
+}
+
+#instruction {
+    font-size: clamp(18px, 3vw, 27px);
+    font-weight: 800;
+    min-height: 35px;
+}
+
+#timerBar {
+    width: min(600px, 85%);
+    height: 9px;
+    background: #24182d;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 15px;
+}
+
+#timerFill {
+    width: 100%;
+    height: 100%;
+    background: #ff39d7;
+    transition: width .05s linear;
+}
+
+#content {
+    width: 100%;
+    min-height: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* ================= GENERAL BUTTONS ================= */
+
+.choice {
+    min-width: 130px;
+    min-height: 65px;
+    padding: 15px 25px;
+    border: 2px solid rgba(255,255,255,.2);
+    border-radius: 18px;
+    background: rgba(255,255,255,.1);
+    color: white;
+    font-size: 20px;
+    font-weight: 900;
+    transition: .12s;
+}
+
+.choice:hover {
+    transform: scale(1.07);
+    background: rgba(255,255,255,.2);
+}
+
+.choice:active {
+    transform: scale(.95);
+}
+
+/* ================= GAME ELEMENTS ================= */
+
+.imposterGrid {
+    display: grid;
+    grid-template-columns: repeat(5, 65px);
+    gap: 10px;
+}
+
+.imposter {
+    width: 65px;
+    height: 65px;
+    border: 0;
+    border-radius: 15px;
+    background: #191020;
+    font-size: 30px;
+}
+
+.reactionButton {
+    width: 230px;
+    height: 130px;
+    border: 0;
+    border-radius: 30px;
+    background: #24182d;
+    color: white;
+    font-size: 28px;
+    font-weight: 1000;
+}
+
+.memoryDisplay {
+    font-size: 55px;
+    letter-spacing: 10px;
+}
+
+.memoryGrid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.glitch {
+    font-size: clamp(45px, 9vw, 90px);
+    font-weight: 1000;
+    letter-spacing: 8px;
+}
+
+.bigTarget {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 0;
+    background: #ff39d7;
+    box-shadow: 0 0 40px #ff39d7;
+}
+
+.dangerZone {
+    width: 300px;
+    height: 200px;
+    border: 3px dashed #ff315d;
+    border-radius: 25px;
+    position: relative;
+}
+
+.movingDot {
+    width: 45px;
+    height: 45px;
+    border: 0;
+    border-radius: 50%;
+    background: #51ff8c;
+    position: absolute;
+}
+
+.glam {
+    font-size: 35px;
+}
+
+#aiMessage {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    max-width: 400px;
+    color: #bcaecb;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* ================= COUNTDOWN ================= */
+
+#countdown {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: rgba(5,0,10,.92);
+    font-size: clamp(80px, 20vw, 180px);
+    font-weight: 1000;
+}
+
+/* ================= RESULT FLASH ================= */
+
+#flash {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    pointer-events: none;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(50px, 12vw, 120px);
+    font-weight: 1000;
+}
+
+/* ================= GAME OVER ================= */
+
+#gameOver {
+    display: none;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.overBox {
+    width: min(650px, 90%);
+    padding: 40px;
+    border-radius: 30px;
+    background: rgba(10,5,25,.8);
+}
+
+.finalScore {
+    font-size: 75px;
+    font-weight: 1000;
+    color: #ff39d7;
+}
+
+.restart {
+    padding: 16px 35px;
+    border: 0;
+    border-radius: 40px;
+    font-size: 19px;
+    font-weight: 900;
+}
+
+@media(max-width:600px) {
+    .imposterGrid {
+        grid-template-columns: repeat(4, 55px);
+    }
+
+    .imposter {
+        width: 55px;
+        height: 55px;
+    }
+
+    .choice {
+        min-width: 100px;
+        font-size: 16px;
+    }
+
+    #aiMessage {
+        display: none;
+    }
+}
+</style>
 </head>
 
 <body>
 
-<!-- MENU -->
+<!-- ================= HOME ================= -->
 
-<div id="menu">
+<section id="home">
 
-    <h1>🎮 WarioWare AI</h1>
+    <div class="homeBox">
 
-    <p>⚡ Tiny Games. Fast Reactions. TOTAL CHAOS! ⚡</p>
+        <p>🤖 AI CORE ONLINE</p>
 
-    <button class="game-button" onclick="startGame(1)">
-        🎯 Game 1 — Catch It
-    </button>
+        <h1 class="logo">
+            WARIO<span>WARE</span>
+        </h1>
 
-    <button class="game-button" onclick="startGame(2)">
-        🔴 Game 2 — Don't Click Red
-    </button>
+        <h2>AI</h2>
 
-    <button class="game-button" onclick="startGame(3)">
-        🧠 Game 3 — Copy Pattern
-    </button>
+        <p class="tagline">
+            Your reflexes are about to be evaluated.
+        </p>
 
-    <button class="game-button" onclick="startGame(4)">
-        🌈 Game 4 — Chaos Mode
-    </button>
+        <button class="startButton" onclick="startRun()">
+            ⚡ START CHAOS
+        </button>
 
-    <button class="game-button" onclick="startGame(5)">
-        🌍 Game 5 — Save The World
-    </button>
+        <p style="color:#777;margin-top:30px;">
+            10 micro-games • increasing speed • AI boss
+        </p>
 
-    <button class="game-button" onclick="startGame(6)">
-        💅 Game 6 — Glam Panic
-    </button>
+    </div>
 
+</section>
+
+
+<!-- ================= GAME ================= -->
+
+<section id="game">
+
+    <div class="topBar">
+
+        <div class="stat">
+            <small>SCORE</small>
+            <strong id="score">0</strong>
+        </div>
+
+        <div class="stat">
+            <small>COMBO</small>
+            <strong id="combo">×1</strong>
+        </div>
+
+        <div class="stat">
+            <small>ROUND</small>
+            <strong id="round">0</strong>
+        </div>
+
+        <div class="stat">
+            <small>LIVES</small>
+            <strong id="lives">❤️❤️❤️</strong>
+        </div>
+
+    </div>
+
+
+    <div id="arena">
+
+        <div id="challenge">
+
+            <div class="microNumber" id="microNumber">
+                MICRO-GAME
+            </div>
+
+            <h1 id="title">
+                GET READY
+            </h1>
+
+            <p id="instruction"></p>
+
+            <div id="timerBar">
+                <div id="timerFill"></div>
+            </div>
+
+            <div id="content"></div>
+
+        </div>
+
+        <div id="aiMessage">
+            🤖 AI: Initializing...
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= COUNTDOWN ================= -->
+
+<div id="countdown">
+    3
 </div>
 
 
-<!-- GAME SCREEN -->
+<!-- ================= FLASH ================= -->
 
-<div id="gameScreen">
-
-    <h1 id="gameTitle"></h1>
-
-    <h2>
-        ⭐ Score:
-        <span id="score">0</span>
-    </h2>
-
-    <p>
-        ⏱️ Time:
-        <span id="time">15</span>
-    </p>
+<div id="flash"></div>
 
 
-    <!-- GAME 1 -->
+<!-- ================= GAME OVER ================= -->
 
-    <div id="game1" class="game">
+<section id="gameOver">
 
-        <h2>🎯 CATCH IT!</h2>
+    <div class="overBox">
 
-        <p>Click the green circle!</p>
+        <p>🤖 AI SESSION COMPLETE</p>
 
-        <div id="target"></div>
+        <h1>RUN OVER</h1>
 
-    </div>
+        <p>FINAL SCORE</p>
 
+        <div class="finalScore" id="finalScore">
+            0
+        </div>
 
-    <!-- GAME 2 -->
+        <p id="finalMessage"></p>
 
-    <div id="game2" class="game">
-
-        <h2>🔴 DON'T CLICK RED!</h2>
-
-        <p>Click a green button!</p>
-
-        <div id="buttons2"></div>
+        <button class="restart" onclick="startRun()">
+            🔄 RUN IT BACK
+        </button>
 
     </div>
 
-
-    <!-- GAME 3 -->
-
-    <div id="game3" class="game">
-
-        <h2>🧠 COPY THE PATTERN!</h2>
-
-        <p id="patternMessage">
-            Watch the pattern!
-        </p>
-
-        <div id="patternDisplay"></div>
-
-        <div id="patternButtons"></div>
-
-    </div>
-
-
-    <!-- GAME 4 -->
-
-    <div id="game4" class="game">
-
-        <h2>🌈 CHAOS MODE!</h2>
-
-        <p id="chaosQuestion">
-            Click the correct color!
-        </p>
-
-        <div id="chaosButtons"></div>
-
-    </div>
-
-
-    <!-- GAME 5 -->
-
-    <div id="game5" class="game">
-
-        <h2>🌍 SAVE THE WORLD!</h2>
-
-        <p id="worldQuestion">
-            🚨 EMERGENCY!
-        </p>
-
-        <div id="worldButtons"></div>
-
-    </div>
-
-
-    <!-- GAME 6 -->
-
-    <div id="game6" class="game">
-
-        <h2>💅 GLAM PANIC!</h2>
-
-        <p id="glamQuestion">
-            Choose the correct item!
-        </p>
-
-        <h2 id="glamTimer">2.0</h2>
-
-        <div id="glamButtons"></div>
-
-        <p id="combo">
-            🔥 Combo: 0
-        </p>
-
-    </div>
-
-
-    <p id="message"></p>
-
-    <button onclick="backToMenu()">
-        ⬅️ Back To Menu
-    </button>
-
-</div>
+</section>
 
 
 <script>
 
-/* =====================================
-   GLOBAL VARIABLES
-===================================== */
+/* =====================================================
+   WARIOWARE AI — ARCADE ENGINE
+===================================================== */
 
-let currentGame = 0;
 let score = 0;
-let time = 15;
+let combo = 1;
+let lives = 3;
+let round = 0;
 
-let gameTimer = null;
-let gameInterval = null;
+let currentGame = null;
+let gameTimeout = null;
+let timerInterval = null;
+let movingInterval = null;
 
-let pattern = [];
-let playerPattern = [];
+let acceptingInput = false;
+let memorySequence = [];
+let playerSequence = [];
 
-let glamTimer = null;
-let combo = 0;
+const games = [
+    "imposter",
+    "reaction",
+    "memory",
+    "oneshot",
+    "ailies",
+    "reverse",
+    "donttouch",
+    "glitch",
+    "glam",
+    "boss"
+];
+
+const home = document.getElementById("home");
+const game = document.getElementById("game");
+const gameOver = document.getElementById("gameOver");
+
+const title = document.getElementById("title");
+const instruction = document.getElementById("instruction");
+const content = document.getElementById("content");
+
+const scoreEl = document.getElementById("score");
+const comboEl = document.getElementById("combo");
+const roundEl = document.getElementById("round");
+const livesEl = document.getElementById("lives");
+
+const timerFill = document.getElementById("timerFill");
+const countdown = document.getElementById("countdown");
+
+const aiMessage = document.getElementById("aiMessage");
+const flash = document.getElementById("flash");
 
 
-/* =====================================
-   START GAME
-===================================== */
+/* =====================================================
+   START
+===================================================== */
 
-function startGame(number) {
+function startRun() {
 
-    currentGame = number;
+    clearEverything();
 
     score = 0;
-    time = 15;
-
-    document.getElementById("score").textContent = score;
-    document.getElementById("time").textContent = time;
-
-    document.getElementById("menu").style.display = "none";
-
-    document.getElementById("gameScreen").style.display = "block";
-
-    document.querySelectorAll(".game").forEach(function(game) {
-        game.classList.remove("active");
-    });
-
-    document.getElementById("game" + number)
-        .classList.add("active");
-
-    document.getElementById("gameTitle").textContent =
-        "Game " + number;
-
-    clearAllTimers();
-
-    startTimer();
-
-
-    if (number === 1) {
-        game1();
-    }
-
-    if (number === 2) {
-        game2();
-    }
-
-    if (number === 3) {
-        game3();
-    }
-
-    if (number === 4) {
-        game4();
-    }
-
-    if (number === 5) {
-        game5();
-    }
-
-    if (number === 6) {
-        game6();
-    }
-}
-
-
-/* =====================================
-   MAIN TIMER
-===================================== */
-
-function startTimer() {
-
-    gameTimer = setInterval(function() {
-
-        time--;
-
-        document.getElementById("time").textContent = time;
-
-        if (time <= 0) {
-
-            alert(
-                "🎮 Game Over!\n\nScore: " + score
-            );
-
-            backToMenu();
-        }
-
-    }, 1000);
-}
-
-
-/* =====================================
-   GAME 1
-===================================== */
-
-function game1() {
-
-    const target =
-        document.getElementById("target");
-
-    target.style.display = "block";
-
-    moveTarget();
-
-    target.onclick = function() {
-
-        score += 100;
-
-        document.getElementById("score")
-            .textContent = score;
-
-        moveTarget();
-    };
-
-    gameInterval = setInterval(
-        moveTarget,
-        700
-    );
-}
-
-
-function moveTarget() {
-
-    const target =
-        document.getElementById("target");
-
-    const x =
-        Math.random() *
-        (window.innerWidth - 100);
-
-    const y =
-        150 +
-        Math.random() *
-        (window.innerHeight - 250);
-
-    target.style.left = x + "px";
-    target.style.top = y + "px";
-}
-
-
-/* =====================================
-   GAME 2
-===================================== */
-
-function game2() {
-
-    createButtons2();
-}
-
-
-function createButtons2() {
-
-    const container =
-        document.getElementById("buttons2");
-
-    container.innerHTML = "";
-
-    const redPosition =
-        Math.floor(Math.random() * 6);
-
-    for (let i = 0; i < 6; i++) {
-
-        const button =
-            document.createElement("button");
-
-        if (i === redPosition) {
-
-            button.textContent = "🔴 RED";
-
-            button.className = "red";
-
-            button.onclick = function() {
-
-                alert("❌ You clicked RED!");
-
-                createButtons2();
-            };
-
-        } else {
-
-            button.textContent = "🟢 SAFE";
-
-            button.className = "safe";
-
-            button.onclick = function() {
-
-                score += 100;
-
-                document.getElementById("score")
-                    .textContent = score;
-
-                createButtons2();
-            };
-        }
-
-        container.appendChild(button);
-    }
-}
-
-
-/* =====================================
-   GAME 3
-===================================== */
-
-function game3() {
-
-    pattern = [];
-    playerPattern = [];
-
-    nextPattern();
-}
-
-
-function nextPattern() {
-
-    const emojis = [
-        "🍎",
-        "🍌",
-        "🍓",
-        "🍇"
-    ];
-
-    pattern.push(
-        emojis[
-            Math.floor(
-                Math.random() * emojis.length
-            )
-        ]
-    );
-
-    playerPattern = [];
-
-    document.getElementById("patternDisplay")
-        .textContent =
-        pattern.join(" ");
-
-    document.getElementById("patternMessage")
-        .textContent =
-        "👀 WATCH!";
-
-    document.getElementById("patternButtons")
-        .innerHTML = "";
-
-    setTimeout(function() {
-
-        document.getElementById("patternDisplay")
-            .textContent = "❓";
-
-        document.getElementById("patternMessage")
-            .textContent =
-            "YOUR TURN!";
-
-        emojis.forEach(function(emoji) {
-
-            const button =
-                document.createElement("button");
-
-            button.textContent = emoji;
-
-            button.onclick = function() {
-
-                playerPattern.push(emoji);
-
-                const index =
-                    playerPattern.length - 1;
-
-                if (
-                    playerPattern[index]
-                    !==
-                    pattern[index]
-                ) {
-
-                    alert("❌ Wrong Pattern!");
-
-                    pattern = [];
-
-                    nextPattern();
-
-                    return;
-                }
-
-                if (
-                    playerPattern.length
-                    ===
-                    pattern.length
-                ) {
-
-                    score +=
-                        pattern.length * 100;
-
-                    document.getElementById("score")
-                        .textContent = score;
-
-                    setTimeout(
-                        nextPattern,
-                        500
-                    );
-                }
-            };
-
-            document.getElementById(
-                "patternButtons"
-            ).appendChild(button);
-
-        });
-
-    }, 1200);
-}
-
-
-/* =====================================
-   GAME 4
-===================================== */
-
-function game4() {
-
-    nextChaos();
-}
-
-
-function nextChaos() {
-
-    const colors = [
-        ["🔴", "RED"],
-        ["🔵", "BLUE"],
-        ["🟢", "GREEN"],
-        ["🟡", "YELLOW"]
-    ];
-
-    const answer =
-        colors[
-            Math.floor(
-                Math.random() * colors.length
-            )
-        ];
-
-    document.getElementById("chaosQuestion")
-        .textContent =
-        "CLICK " +
-        answer[0] +
-        " " +
-        answer[1];
-
-    const container =
-        document.getElementById("chaosButtons");
-
-    container.innerHTML = "";
-
-    colors.sort(
-        () => Math.random() - 0.5
-    );
-
-    colors.forEach(function(color) {
-
-        const button =
-            document.createElement("button");
-
-        button.textContent =
-            color[0] +
-            " " +
-            color[1];
-
-        button.onclick = function() {
-
-            if (color[1] === answer[1]) {
-
-                score += 100;
-
-                document.getElementById("score")
-                    .textContent = score;
-
-            } else {
-
-                alert("❌ WRONG!");
-            }
-
-            nextChaos();
-        };
-
-        container.appendChild(button);
-    });
-}
-
-
-/* =====================================
-   GAME 5
-===================================== */
-
-function game5() {
-
-    nextWorld();
-}
-
-
-function nextWorld() {
-
-    const disasters = [
-
-        ["☄️ METEOR!", "ROCKET"],
-
-        ["🤖 AI ESCAPED!", "AI"],
-
-        ["⚡ POWER FAILURE!", "POWER"],
-
-        ["☢️ NUCLEAR ALERT!", "NUKE"],
-
-        ["👽 ALIEN ATTACK!", "ROCKET"]
-
-    ];
-
-    const disaster =
-        disasters[
-            Math.floor(
-                Math.random() *
-                disasters.length
-            )
-        ];
-
-    document.getElementById("worldQuestion")
-        .textContent =
-        disaster[0];
-
-    const container =
-        document.getElementById("worldButtons");
-
-    container.innerHTML = "";
-
-    const choices = [
-        "ROCKET",
-        "AI",
-        "POWER",
-        "NUKE",
-        "HIDE"
-    ];
-
-    choices.sort(
-        () => Math.random() - 0.5
-    );
-
-    choices.forEach(function(choice) {
-
-        const button =
-            document.createElement("button");
-
-        button.textContent = choice;
-
-        button.onclick = function() {
-
-            if (choice === disaster[1]) {
-
-                score += 200;
-
-                document.getElementById("score")
-                    .textContent = score;
-
-            } else {
-
-                alert("❌ WRONG CHOICE!");
-            }
-
-            nextWorld();
-        };
-
-        container.appendChild(button);
-    });
-}
-
-
-/* =====================================
-   GAME 6
-===================================== */
-
-function game6() {
-
-    combo = 0;
-
-    document.getElementById("combo")
-        .textContent =
-        "🔥 Combo: 0";
-
-    nextGlam();
-}
-
-
-function nextGlam() {
-
-    const challenges = [
-
-        ["💇 HAIR EMERGENCY!", "HAIR"],
-
-        ["💅 NAIL DISASTER!", "NAILS"],
-
-        ["👗 OUTFIT CRISIS!", "OUTFIT"],
-
-        ["👜 BAG CHECK!", "BAG"],
-
-        ["👠 SHOE EMERGENCY!", "SHOES"],
-
-        ["📸 PHOTO SHOOT!", "CAMERA"]
-
-    ];
-
-    const challenge =
-        challenges[
-            Math.floor(
-                Math.random() *
-                challenges.length
-            )
-        ];
-
-    const answer =
-        challenge[1];
-
-    document.getElementById("glamQuestion")
-        .textContent =
-        challenge[0];
-
-    document.getElementById("glamTimer")
-        .textContent =
-        "2.0";
-
-    const container =
-        document.getElementById("glamButtons");
-
-    container.innerHTML = "";
-
-    const choices = [
-        "HAIR",
-        "NAILS",
-        "OUTFIT",
-        "BAG",
-        "SHOES",
-        "CAMERA"
-    ];
-
-    choices.sort(
-        () => Math.random() - 0.5
-    );
-
-    choices.forEach(function(choice) {
-
-        const button =
-            document.createElement("button");
-
-        button.textContent = choice;
-
-        button.onclick = function() {
-
-            clearTimeout(glamTimer);
-
-            if (choice === answer) {
-
-                combo++;
-
-                score +=
-                    150 +
-                    combo * 50;
-
-                document.getElementById("score")
-                    .textContent = score;
-
-                document.getElementById("combo")
-                    .textContent =
-                    "🔥 Combo: " + combo;
-
-                nextGlam();
-
-            } else {
-
-                combo = 0;
-
-                document.getElementById("combo")
-                    .textContent =
-                    "🔥 Combo: 0";
-
-                alert("❌ WRONG!");
-
-                nextGlam();
-            }
-        };
-
-        container.appendChild(button);
-    });
-
-
-    let remaining = 2.0;
-
-    glamTimer =
-        setInterval(function() {
-
-            remaining -= 0.1;
-
-            document.getElementById("glamTimer")
-                .textContent =
-                Math.max(
-                    0,
-                    remaining
-                ).toFixed(1);
-
-            if (remaining <= 0) {
-
-                clearInterval(glamTimer);
-
-                combo = 0;
-
-                document.getElementById("combo")
-                    .textContent =
-                    "🔥 Combo: 0";
-
-                nextGlam();
-            }
-
-        }, 100);
-}
-
-
-/* =====================================
-   CLEAR TIMERS
-===================================== */
-
-function clearAllTimers() {
-
-    clearInterval(gameTimer);
-
-    clearInterval(gameInterval);
-
-    clearInterval(glamTimer);
-
-    gameTimer = null;
-    gameInterval = null;
-    glamTimer = null;
-
-    document.getElementById("target")
-        .style.display = "none";
-}
-
-
-/* =====================================
-   BACK TO MENU
-===================================== */
-
-function backToMenu() {
-
-    clearAllTimers();
-
-    document.getElementById("gameScreen")
-        .style.display = "none";
-
-    document.getElementById("menu")
-        .style.display = "block";
-
-    document.querySelectorAll(".game")
-        .forEach(function(game) {
-            game.classList.remove("active");
-        });
-}
-
-</script>
-
-</body>
-</html>
+    combo = 1;
+    lives = 3;
+    round = 0;
+
+    scoreEl.textContent = "0";
+    comboEl.textContent = "×1";
+    roundEl.textContent = "0";
+    livesEl.textContent = "❤️❤️❤️";
+
+    home.style.display = "none";
+    gameOver.style.display = "none";
+    game.style.display = "block";
+
+    aiMessage.textContent =
+        "🤖
 ```
