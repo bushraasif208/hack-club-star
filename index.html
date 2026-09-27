@@ -9,75 +9,132 @@
 
     <style>
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
             text-align: center;
             background: #111;
             color: white;
-            padding: 25px 15px;
+            padding: 30px 15px;
         }
 
         h1 {
-            font-size: 45px;
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        #subtitle {
+            font-size: 20px;
+            color: #ccc;
+        }
+
+        #menu {
+            max-width: 750px;
+            margin: 40px auto;
+        }
+
+        .gameButton {
+            width: 90%;
+            max-width: 600px;
+            margin: 15px auto;
+            padding: 25px;
+            display: block;
+
+            font-size: 24px;
+            font-weight: bold;
+
+            border: 3px solid white;
+            border-radius: 15px;
+
+            background: #222;
+            color: white;
+
+            cursor: pointer;
+
+            transition: transform 0.15s;
+        }
+
+        .gameButton:hover {
+            transform: scale(1.04);
+        }
+
+        .gameDescription {
+            display: block;
+            font-size: 16px;
+            font-weight: normal;
+            margin-top: 8px;
+            color: #ccc;
+        }
+
+        #gameScreen {
+            display: none;
         }
 
         #challenge {
-            font-size: 28px;
+            font-size: 30px;
             margin: 25px 0;
         }
 
         #timer,
         #score,
-        #lives,
-        #level {
-            font-size: 22px;
-            margin: 10px;
+        #lives {
+            font-size: 21px;
+            margin: 8px;
         }
 
         #gameArea {
             position: relative;
+
             width: 90%;
             max-width: 700px;
             height: 350px;
+
             margin: 30px auto;
+
             border: 3px solid white;
             border-radius: 15px;
-            background: #222;
-            overflow: hidden;
-        }
 
-        #startButton {
-            padding: 15px 30px;
-            font-size: 20px;
-            cursor: pointer;
-            border: none;
-            border-radius: 10px;
+            background: #222;
+
+            overflow: hidden;
         }
 
         #target {
             display: none;
+
             position: absolute;
+
             width: 70px;
             height: 70px;
+
             border-radius: 50%;
+
             font-size: 30px;
-            padding: 0;
+
             border: none;
+
             cursor: pointer;
         }
 
         #dangerGame {
             display: none;
-            padding: 30px;
+            padding: 50px 10px;
         }
 
         .safeButton,
         .dangerButton {
             padding: 18px 25px;
             margin: 10px;
+
             font-size: 20px;
+
             border: none;
             border-radius: 10px;
+
             cursor: pointer;
         }
 
@@ -91,74 +148,131 @@
             color: white;
         }
 
+        #backButton {
+            margin-top: 20px;
+
+            padding: 12px 25px;
+
+            font-size: 18px;
+
+            border: none;
+            border-radius: 10px;
+
+            cursor: pointer;
+        }
+
     </style>
 
 </head>
 
+
 <body>
 
-    <h1>🎮 WarioWare AI</h1>
 
-    <p id="challenge">
-        Welcome to the mini-game challenge!
-    </p>
+    <!-- HOME MENU -->
 
-    <p id="timer">
-        ⏱️ Time: 15
-    </p>
+    <div id="menu">
 
-    <p id="score">
-        🏆 Score: 0
-    </p>
+        <h1>🎮 WarioWare AI</h1>
 
-    <p id="lives">
-        ❤️ Lives: 3
-    </p>
-
-    <p id="level">
-        ⭐ Level: 1
-    </p>
-
-    <button id="startButton">
-        START GAME
-    </button>
+        <p id="subtitle">
+            Choose your mini-game!
+        </p>
 
 
-    <div id="gameArea">
+        <button class="gameButton" id="game1Button">
 
-        <!-- GAME 1 -->
+            🎯 GAME 1
 
-        <button id="target">
-            🎯
+            <span class="gameDescription">
+                Click the moving target!
+            </span>
+
         </button>
 
 
-        <!-- GAME 2 -->
+        <button class="gameButton" id="game2Button">
 
-        <div id="dangerGame">
+            🚨 GAME 2
 
-            <button class="safeButton">
-                🟢 SAFE
-            </button>
+            <span class="gameDescription">
+                Don't click the red button!
+            </span>
 
-            <button class="safeButton">
-                🟢 SAFE
-            </button>
-
-            <button class="dangerButton">
-                🔴 DANGER
-            </button>
-
-            <button class="safeButton">
-                🟢 SAFE
-            </button>
-
-        </div>
+        </button>
 
     </div>
 
 
+
+    <!-- GAME SCREEN -->
+
+    <div id="gameScreen">
+
+        <h1>🎮 WarioWare AI</h1>
+
+        <p id="challenge">
+            Challenge
+        </p>
+
+        <p id="timer">
+            ⏱️ Time: 15
+        </p>
+
+        <p id="score">
+            🏆 Score: 0
+        </p>
+
+        <p id="lives">
+            ❤️ Lives: 3
+        </p>
+
+
+        <div id="gameArea">
+
+
+            <!-- GAME 1 -->
+
+            <button id="target">
+                🎯
+            </button>
+
+
+            <!-- GAME 2 -->
+
+            <div id="dangerGame">
+
+                <button class="safeButton">
+                    🟢 SAFE
+                </button>
+
+                <button class="safeButton">
+                    🟢 SAFE
+                </button>
+
+                <button class="dangerButton">
+                    🔴 DANGER
+                </button>
+
+                <button class="safeButton">
+                    🟢 SAFE
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <button id="backButton">
+            ⬅️ Back to Games
+        </button>
+
+    </div>
+
+
+
     <script>
+
 
         // GAME VARIABLES
 
@@ -167,8 +281,6 @@
         let score = 0;
 
         let lives = 3;
-
-        let level = 1;
 
         let gameRunning = false;
 
@@ -179,7 +291,20 @@
         let moveTimer;
 
 
-        // HTML ELEMENTS
+
+        // ELEMENTS
+
+        const menu =
+            document.getElementById("menu");
+
+        const gameScreen =
+            document.getElementById("gameScreen");
+
+        const game1Button =
+            document.getElementById("game1Button");
+
+        const game2Button =
+            document.getElementById("game2Button");
 
         const challenge =
             document.getElementById("challenge");
@@ -193,12 +318,6 @@
         const livesDisplay =
             document.getElementById("lives");
 
-        const levelDisplay =
-            document.getElementById("level");
-
-        const startButton =
-            document.getElementById("startButton");
-
         const target =
             document.getElementById("target");
 
@@ -208,11 +327,27 @@
         const gameArea =
             document.getElementById("gameArea");
 
+        const backButton =
+            document.getElementById("backButton");
+
         const safeButtons =
             document.querySelectorAll(".safeButton");
 
         const dangerButton =
             document.querySelector(".dangerButton");
+
+
+
+        // HIDE MINI-GAMES
+
+        function hideGames() {
+
+            target.style.display = "none";
+
+            dangerGame.style.display = "none";
+
+        }
+
 
 
         // MOVE TARGET
@@ -238,146 +373,151 @@
 
             target.style.top =
                 randomY + "px";
+
         }
 
 
-        // HIDE ALL MINI-GAMES
 
-        function hideGames() {
+        // START SELECTED GAME
 
-            target.style.display =
-                "none";
-
-            dangerGame.style.display =
-                "none";
-        }
+        function startGame(gameNumber) {
 
 
-        // START GAME
+            clearInterval(gameTimer);
 
-        startButton.addEventListener(
-            "click",
-            function () {
-
-                if (gameRunning) {
-                    return;
-                }
+            clearInterval(moveTimer);
 
 
-                // RESET
+            timeLeft = 15;
 
-                timeLeft = 15;
+            score = 0;
 
-                score = 0;
+            lives = 3;
 
-                lives = 3;
+            currentGame = gameNumber;
 
-                level = 1;
-
-                gameRunning = true;
+            gameRunning = true;
 
 
-                scoreDisplay.textContent =
-                    "🏆 Score: 0";
+            menu.style.display = "none";
 
-                livesDisplay.textContent =
-                    "❤️ Lives: 3";
-
-                levelDisplay.textContent =
-                    "⭐ Level: 1";
-
-                timer.textContent =
-                    "⏱️ Time: 15";
+            gameScreen.style.display = "block";
 
 
-                startButton.textContent =
-                    "GAME RUNNING...";
+            scoreDisplay.textContent =
+                "🏆 Score: 0";
+
+            livesDisplay.textContent =
+                "❤️ Lives: 3";
+
+            timer.textContent =
+                "⏱️ Time: 15";
 
 
-                clearInterval(gameTimer);
-
-                clearInterval(moveTimer);
+            hideGames();
 
 
-                // RANDOM MINI-GAME
 
-                currentGame =
-                    currentGame = 2;
+            // GAME 1
 
+            if (currentGame === 1) {
 
-                hideGames();
+                challenge.textContent =
+                    "🎯 CLICK THE TARGET!";
 
+                target.style.display =
+                    "block";
 
-                // GAME 1
-
-                if (currentGame === 1) {
-
-                    challenge.textContent =
-                        "🎯 CLICK THE TARGET!";
-
-                    target.style.display =
-                        "block";
-
-                    moveTarget();
+                moveTarget();
 
 
-                    moveTimer =
-                        setInterval(
-                            function () {
-
-                                if (gameRunning) {
-                                    moveTarget();
-                                }
-
-                            },
-                            700
-                        );
-                }
-
-
-                // GAME 2
-
-                if (currentGame === 2) {
-
-                    challenge.textContent =
-                        "🚨 DON'T CLICK THE RED BUTTON!";
-
-                    dangerGame.style.display =
-                        "block";
-                }
-
-
-                // TIMER
-
-                gameTimer =
+                moveTimer =
                     setInterval(
                         function () {
 
-                            timeLeft--;
-
-                            timer.textContent =
-                                "⏱️ Time: " +
-                                timeLeft;
-
-
-                            if (timeLeft <= 0) {
-
-                                endGame(
-                                    "💥 TIME'S UP! SCORE: " +
-                                    score
-                                );
-
+                            if (gameRunning) {
+                                moveTarget();
                             }
 
                         },
-                        1000
+                        700
                     );
+
+            }
+
+
+
+            // GAME 2
+
+            if (currentGame === 2) {
+
+                challenge.textContent =
+                    "🚨 DON'T CLICK THE RED BUTTON!";
+
+                dangerGame.style.display =
+                    "block";
+
+            }
+
+
+
+            // TIMER
+
+            gameTimer =
+                setInterval(
+                    function () {
+
+                        timeLeft--;
+
+                        timer.textContent =
+                            "⏱️ Time: " +
+                            timeLeft;
+
+
+                        if (timeLeft <= 0) {
+
+                            endGame(
+                                "💥 TIME'S UP! SCORE: " +
+                                score
+                            );
+
+                        }
+
+                    },
+                    1000
+                );
+
+        }
+
+
+
+        // GAME 1 BUTTON
+
+        game1Button.addEventListener(
+            "click",
+            function () {
+
+                startGame(1);
 
             }
         );
 
 
-        // GAME 1 TARGET CLICK
+
+        // GAME 2 BUTTON
+
+        game2Button.addEventListener(
+            "click",
+            function () {
+
+                startGame(2);
+
+            }
+        );
+
+
+
+        // TARGET CLICK
 
         target.addEventListener(
             "click",
@@ -407,7 +547,8 @@
         );
 
 
-        // GAME 2 SAFE BUTTON
+
+        // SAFE BUTTONS
 
         safeButtons.forEach(
             function (button) {
@@ -455,7 +596,8 @@
         );
 
 
-        // GAME 2 DANGER BUTTON
+
+        // DANGER BUTTON
 
         dangerButton.addEventListener(
             "click",
@@ -476,7 +618,7 @@
 
 
                 challenge.textContent =
-                    "💥 OH NO! DANGER!";
+                    "💥 OH NO!";
 
 
                 if (lives <= 0) {
@@ -490,6 +632,7 @@
 
             }
         );
+
 
 
         // END GAME
@@ -507,10 +650,33 @@
             challenge.textContent =
                 message;
 
-            startButton.textContent =
-                "PLAY AGAIN";
-
         }
+
+
+
+        // BACK TO MENU
+
+        backButton.addEventListener(
+            "click",
+            function () {
+
+                clearInterval(gameTimer);
+
+                clearInterval(moveTimer);
+
+                gameRunning = false;
+
+                hideGames();
+
+                gameScreen.style.display =
+                    "none";
+
+                menu.style.display =
+                    "block";
+
+            }
+        );
+
 
     </script>
 
