@@ -20,6 +20,7 @@
             background: #111;
             color: white;
             padding: 25px 15px;
+            transition: 0.15s;
         }
 
         h1 {
@@ -32,7 +33,7 @@
             font-size: 20px;
         }
 
-        /* MENU */
+        /* ================= MENU ================= */
 
         #menu {
             max-width: 750px;
@@ -42,6 +43,7 @@
         .gameButton {
             width: 90%;
             max-width: 600px;
+
             margin: 15px auto;
             padding: 25px;
 
@@ -63,10 +65,12 @@
 
         .gameButton:hover {
             transform: scale(1.04);
+            background: #333;
         }
 
         .gameDescription {
             display: block;
+
             margin-top: 8px;
 
             font-size: 16px;
@@ -75,7 +79,7 @@
             color: #ccc;
         }
 
-        /* GAME SCREEN */
+        /* ================= GAME SCREEN ================= */
 
         #gameScreen {
             display: none;
@@ -84,6 +88,7 @@
         #challenge {
             font-size: 30px;
             margin: 25px 0;
+            min-height: 45px;
         }
 
         #timer,
@@ -110,7 +115,7 @@
             overflow: hidden;
         }
 
-        /* GAME 1 */
+        /* ================= GAME 1 ================= */
 
         #target {
             display: none;
@@ -129,10 +134,11 @@
             cursor: pointer;
         }
 
-        /* GAME 2 */
+        /* ================= GAME 2 ================= */
 
         #dangerGame {
             display: none;
+
             padding: 60px 10px;
         }
 
@@ -160,7 +166,7 @@
             color: white;
         }
 
-        /* GAME 3 */
+        /* ================= GAME 3 ================= */
 
         #memoryGame {
             display: none;
@@ -213,11 +219,62 @@
             cursor: pointer;
         }
 
-        .memoryButton:hover {
-            transform: scale(1.08);
+        /* ================= GAME 4 ================= */
+
+        #chaosGame {
+            display: none;
+
+            padding: 30px 10px;
         }
 
-        /* BACK */
+        #chaosInstruction {
+            font-size: 36px;
+
+            font-weight: bold;
+
+            min-height: 70px;
+
+            margin: 20px;
+        }
+
+        #chaosMessage {
+            font-size: 20px;
+
+            min-height: 30px;
+        }
+
+        #chaosButtons {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+
+            max-width: 450px;
+
+            margin: 30px auto;
+        }
+
+        .chaosButton {
+            min-height: 90px;
+
+            font-size: 30px;
+
+            border: 4px solid white;
+
+            border-radius: 15px;
+
+            cursor: pointer;
+
+            transition: 0.15s;
+        }
+
+        .chaosButton:hover {
+            transform: scale(1.05);
+        }
+
+        /* ================= BACK ================= */
 
         #backButton {
             margin-top: 20px;
@@ -241,9 +298,9 @@
 <body>
 
 
-    <!-- ========================= -->
-    <!-- GAME SELECTION MENU -->
-    <!-- ========================= -->
+    <!-- ================================================= -->
+    <!-- MENU -->
+    <!-- ================================================= -->
 
     <div id="menu">
 
@@ -286,13 +343,24 @@
 
         </button>
 
+
+        <button class="gameButton" id="game4Button">
+
+            🤯 GAME 4
+
+            <span class="gameDescription">
+                CHAOS MODE — obey before it changes!
+            </span>
+
+        </button>
+
     </div>
 
 
 
-    <!-- ========================= -->
+    <!-- ================================================= -->
     <!-- GAME SCREEN -->
-    <!-- ========================= -->
+    <!-- ================================================= -->
 
     <div id="gameScreen">
 
@@ -323,9 +391,7 @@
         <div id="gameArea">
 
 
-            <!-- ================= -->
-            <!-- GAME 1 -->
-            <!-- ================= -->
+            <!-- ================= GAME 1 ================= -->
 
             <button id="target">
                 🎯
@@ -333,9 +399,7 @@
 
 
 
-            <!-- ================= -->
-            <!-- GAME 2 -->
-            <!-- ================= -->
+            <!-- ================= GAME 2 ================= -->
 
             <div id="dangerGame">
 
@@ -359,13 +423,13 @@
 
 
 
-            <!-- ================= -->
-            <!-- GAME 3 -->
-            <!-- ================= -->
+            <!-- ================= GAME 3 ================= -->
 
             <div id="memoryGame">
 
-                <h2>🧠 Remember the pattern!</h2>
+                <h2>
+                    🧠 Remember the pattern!
+                </h2>
 
                 <div id="pattern">
                     👀
@@ -378,19 +442,72 @@
 
                 <div id="memoryButtons">
 
-                    <button class="memoryButton" data-symbol="🔴">
+                    <button class="memoryButton"
+                        data-symbol="🔴">
                         🔴
                     </button>
 
-                    <button class="memoryButton" data-symbol="🔵">
+                    <button class="memoryButton"
+                        data-symbol="🔵">
                         🔵
                     </button>
 
-                    <button class="memoryButton" data-symbol="🟢">
+                    <button class="memoryButton"
+                        data-symbol="🟢">
                         🟢
                     </button>
 
-                    <button class="memoryButton" data-symbol="🟡">
+                    <button class="memoryButton"
+                        data-symbol="🟡">
+                        🟡
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= GAME 4 ================= -->
+
+            <div id="chaosGame">
+
+                <h2>
+                    🤯 CHAOS MODE
+                </h2>
+
+                <div id="chaosInstruction">
+                    GET READY...
+                </div>
+
+                <p id="chaosMessage">
+                    Follow the command!
+                </p>
+
+
+                <div id="chaosButtons">
+
+                    <button
+                        class="chaosButton"
+                        data-color="RED">
+                        🔴
+                    </button>
+
+                    <button
+                        class="chaosButton"
+                        data-color="BLUE">
+                        🔵
+                    </button>
+
+                    <button
+                        class="chaosButton"
+                        data-color="GREEN">
+                        🟢
+                    </button>
+
+                    <button
+                        class="chaosButton"
+                        data-color="YELLOW">
                         🟡
                     </button>
 
@@ -414,9 +531,9 @@
     <script>
 
 
-        /* =========================
+        /* =================================================
            GAME VARIABLES
-        ========================= */
+        ================================================= */
 
         let timeLeft = 15;
 
@@ -433,7 +550,7 @@
         let moveTimer;
 
 
-        /* GAME 3 VARIABLES */
+        /* GAME 3 */
 
         let memoryPattern = [];
 
@@ -442,10 +559,19 @@
         let memoryRound = 1;
 
 
+        /* GAME 4 */
 
-        /* =========================
+        let chaosAnswer = "";
+
+        let chaosTimer;
+
+        let chaosRound = 0;
+
+
+
+        /* =================================================
            ELEMENTS
-        ========================= */
+        ================================================= */
 
         const menu =
             document.getElementById("menu");
@@ -462,6 +588,9 @@
 
         const game3Button =
             document.getElementById("game3Button");
+
+        const game4Button =
+            document.getElementById("game4Button");
 
 
         const challenge =
@@ -480,39 +609,59 @@
         const gameArea =
             document.getElementById("gameArea");
 
-
         const target =
             document.getElementById("target");
-
 
         const dangerGame =
             document.getElementById("dangerGame");
 
-
         const memoryGame =
             document.getElementById("memoryGame");
+
+        const chaosGame =
+            document.getElementById("chaosGame");
 
 
         const patternDisplay =
             document.getElementById("pattern");
-
 
         const memoryMessage =
             document.getElementById("memoryMessage");
 
 
         const memoryButtons =
-            document.querySelectorAll(".memoryButton");
+            document.querySelectorAll(
+                ".memoryButton"
+            );
+
+
+        const chaosInstruction =
+            document.getElementById(
+                "chaosInstruction"
+            );
+
+        const chaosMessage =
+            document.getElementById(
+                "chaosMessage"
+            );
+
+
+        const chaosButtons =
+            document.querySelectorAll(
+                ".chaosButton"
+            );
 
 
         const backButton =
-            document.getElementById("backButton");
+            document.getElementById(
+                "backButton"
+            );
 
 
 
-        /* =========================
-           HIDE GAMES
-        ========================= */
+        /* =================================================
+           HIDE ALL GAMES
+        ================================================= */
 
         function hideGames() {
 
@@ -525,13 +674,16 @@
             memoryGame.style.display =
                 "none";
 
+            chaosGame.style.display =
+                "none";
+
         }
 
 
 
-        /* =========================
-           MOVE TARGET
-        ========================= */
+        /* =================================================
+           GAME 1
+        ================================================= */
 
         function moveTarget() {
 
@@ -564,16 +716,17 @@
 
 
 
-        /* =========================
+        /* =================================================
            START GAME
-        ========================= */
+        ================================================= */
 
         function startGame(gameNumber) {
-
 
             clearInterval(gameTimer);
 
             clearInterval(moveTimer);
+
+            clearInterval(chaosTimer);
 
 
             timeLeft = 15;
@@ -609,9 +762,7 @@
 
 
 
-            /* =====================
-               GAME 1
-            ===================== */
+            /* GAME 1 */
 
             if (currentGame === 1) {
 
@@ -629,9 +780,7 @@
                         function () {
 
                             if (gameRunning) {
-
                                 moveTarget();
-
                             }
 
                         },
@@ -642,9 +791,7 @@
 
 
 
-            /* =====================
-               GAME 2
-            ===================== */
+            /* GAME 2 */
 
             if (currentGame === 2) {
 
@@ -658,9 +805,7 @@
 
 
 
-            /* =====================
-               GAME 3
-            ===================== */
+            /* GAME 3 */
 
             if (currentGame === 3) {
 
@@ -676,9 +821,23 @@
 
 
 
-            /* =====================
-               TIMER
-            ===================== */
+            /* GAME 4 */
+
+            if (currentGame === 4) {
+
+                challenge.textContent =
+                    "🤯 CHAOS MODE!";
+
+                chaosGame.style.display =
+                    "block";
+
+                startChaosGame();
+
+            }
+
+
+
+            /* MAIN TIMER */
 
             gameTimer =
                 setInterval(
@@ -708,9 +867,9 @@
 
 
 
-        /* =========================
-           GAME 1 BUTTON
-        ========================= */
+        /* =================================================
+           MENU BUTTONS
+        ================================================= */
 
         game1Button.addEventListener(
             "click",
@@ -722,11 +881,6 @@
         );
 
 
-
-        /* =========================
-           GAME 2 BUTTON
-        ========================= */
-
         game2Button.addEventListener(
             "click",
             function () {
@@ -736,11 +890,6 @@
             }
         );
 
-
-
-        /* =========================
-           GAME 3 BUTTON
-        ========================= */
 
         game3Button.addEventListener(
             "click",
@@ -752,10 +901,20 @@
         );
 
 
+        game4Button.addEventListener(
+            "click",
+            function () {
 
-        /* =========================
+                startGame(4);
+
+            }
+        );
+
+
+
+        /* =================================================
            GAME 1 CLICK
-        ========================= */
+        ================================================= */
 
         target.addEventListener(
             "click",
@@ -788,9 +947,9 @@
 
 
 
-        /* =========================
-           GAME 2 SAFE BUTTONS
-        ========================= */
+        /* =================================================
+           GAME 2
+        ================================================= */
 
         const safeButtons =
             document.querySelectorAll(
@@ -846,11 +1005,6 @@
         );
 
 
-
-        /* =========================
-           GAME 2 DANGER
-        ========================= */
-
         const dangerButton =
             document.querySelector(
                 ".dangerButton"
@@ -895,11 +1049,9 @@
 
 
 
-        /* =========================
-           GAME 3
-           MEMORY GAME
-        ========================= */
-
+        /* =================================================
+           GAME 3 — MEMORY
+        ================================================= */
 
         function startMemoryGame() {
 
@@ -908,7 +1060,6 @@
             playerPattern = [];
 
             memoryRound = 1;
-
 
             nextMemoryRound();
 
@@ -984,7 +1135,7 @@
                         "❓ ❓ ❓";
 
                     memoryMessage.textContent =
-                        "🎯 Now copy it!";
+                        "🎯 COPY IT!";
 
 
                     memoryButtons.forEach(
@@ -1003,10 +1154,6 @@
         }
 
 
-
-        /* =========================
-           MEMORY BUTTON CLICK
-        ========================= */
 
         memoryButtons.forEach(
             function (button) {
@@ -1032,15 +1179,13 @@
                         );
 
 
-                        const currentIndex =
+                        const index =
                             playerPattern.length - 1;
 
 
-                        /* WRONG */
-
                         if (
                             symbol !==
-                            memoryPattern[currentIndex]
+                            memoryPattern[index]
                         ) {
 
                             lives--;
@@ -1053,9 +1198,6 @@
 
                             memoryMessage.textContent =
                                 "❌ WRONG!";
-
-
-                            playerPattern = [];
 
 
                             if (lives <= 0) {
@@ -1076,7 +1218,7 @@
                                     nextMemoryRound();
 
                                 },
-                                800
+                                700
                             );
 
 
@@ -1085,13 +1227,9 @@
                         }
 
 
-                        /* CORRECT SYMBOL */
-
                         memoryMessage.textContent =
                             "✅ Correct!";
 
-
-                        /* COMPLETE PATTERN */
 
                         if (
                             playerPattern.length ===
@@ -1125,7 +1263,7 @@
                                     nextMemoryRound();
 
                                 },
-                                800
+                                700
                             );
 
                         }
@@ -1138,15 +1276,304 @@
 
 
 
-        /* =========================
+        /* =================================================
+           GAME 4 — CHAOS MODE
+        ================================================= */
+
+        function startChaosGame() {
+
+            chaosRound = 0;
+
+            chaosMessage.textContent =
+                "⚡ GET READY!";
+
+
+            setTimeout(
+                function () {
+
+                    nextChaosCommand();
+
+                },
+                1000
+            );
+
+        }
+
+
+
+        function nextChaosCommand() {
+
+            if (
+                !gameRunning ||
+                currentGame !== 4
+            ) {
+                return;
+            }
+
+
+            chaosRound++;
+
+
+            const colors = [
+                "RED",
+                "BLUE",
+                "GREEN",
+                "YELLOW"
+            ];
+
+
+            chaosAnswer =
+                colors[
+                    Math.floor(
+                        Math.random() *
+                        colors.length
+                    )
+                ];
+
+
+            const commands = [
+
+                "CLICK " +
+                chaosAnswer +
+
+                "!",
+
+                "⚡ QUICK! CLICK " +
+                chaosAnswer,
+
+                "🚨 " +
+                chaosAnswer +
+                " NOW!",
+
+                "😈 DON'T THINK — " +
+                chaosAnswer,
+
+            ];
+
+
+            chaosInstruction.textContent =
+                commands[
+                    Math.floor(
+                        Math.random() *
+                        commands.length
+                    )
+                ];
+
+
+            chaosMessage.textContent =
+                "Round " +
+                chaosRound;
+
+
+            /* SHUFFLE BUTTONS */
+
+            const buttons =
+                Array.from(
+                    chaosButtons
+                );
+
+
+            buttons.sort(
+                function () {
+
+                    return Math.random() -
+                        0.5;
+
+                }
+            );
+
+
+            const container =
+                document.getElementById(
+                    "chaosButtons"
+                );
+
+
+            buttons.forEach(
+                function (button) {
+
+                    container.appendChild(
+                        button
+                    );
+
+                }
+            );
+
+
+            /* SOMETIMES CHANGE THE SPEED */
+
+            const speed =
+                Math.max(
+                    500,
+                    1300 -
+                    chaosRound * 60
+                );
+
+
+            clearTimeout(chaosTimer);
+
+
+            chaosTimer =
+                setTimeout(
+                    function () {
+
+                        if (
+                            gameRunning &&
+                            currentGame === 4
+                        ) {
+
+                            lives--;
+
+
+                            livesDisplay.textContent =
+                                "❤️ Lives: " +
+                                lives;
+
+
+                            chaosMessage.textContent =
+                                "💥 TOO SLOW!";
+
+
+                            if (
+                                lives <= 0
+                            ) {
+
+                                endGame(
+                                    "💀 CHAOS DESTROYED YOU! SCORE: " +
+                                    score
+                                );
+
+                                return;
+
+                            }
+
+
+                            setTimeout(
+                                nextChaosCommand,
+                                500
+                            );
+
+                        }
+
+                    },
+                    speed
+                );
+
+        }
+
+
+
+        /* CHAOS BUTTON CLICK */
+
+        chaosButtons.forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        if (
+                            !gameRunning ||
+                            currentGame !== 4
+                        ) {
+                            return;
+                        }
+
+
+                        clearTimeout(
+                            chaosTimer
+                        );
+
+
+                        const selectedColor =
+                            button.dataset.color;
+
+
+                        if (
+                            selectedColor ===
+                            chaosAnswer
+                        ) {
+
+                            const points =
+                                100 +
+                                (
+                                    chaosRound *
+                                    25
+                                );
+
+
+                            score += points;
+
+
+                            scoreDisplay.textContent =
+                                "🏆 Score: " +
+                                score;
+
+
+                            chaosMessage.textContent =
+                                "🔥 CORRECT! +" +
+                                points;
+
+
+                            setTimeout(
+                                nextChaosCommand,
+                                250
+                            );
+
+                        } else {
+
+                            lives--;
+
+
+                            livesDisplay.textContent =
+                                "❤️ Lives: " +
+                                lives;
+
+
+                            chaosMessage.textContent =
+                                "💀 WRONG BUTTON!";
+
+
+                            if (
+                                lives <= 0
+                            ) {
+
+                                endGame(
+                                    "💀 CHAOS DESTROYED YOU! SCORE: " +
+                                    score
+                                );
+
+                                return;
+
+                            }
+
+
+                            setTimeout(
+                                nextChaosCommand,
+                                500
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+
+        /* =================================================
            END GAME
-        ========================= */
+        ================================================= */
 
         function endGame(message) {
 
             clearInterval(gameTimer);
 
             clearInterval(moveTimer);
+
+            clearTimeout(chaosTimer);
 
 
             gameRunning = false;
@@ -1162,9 +1589,9 @@
 
 
 
-        /* =========================
+        /* =================================================
            BACK TO MENU
-        ========================= */
+        ================================================= */
 
         backButton.addEventListener(
             "click",
@@ -1173,6 +1600,8 @@
                 clearInterval(gameTimer);
 
                 clearInterval(moveTimer);
+
+                clearTimeout(chaosTimer);
 
 
                 gameRunning = false;
@@ -1190,7 +1619,6 @@
 
             }
         );
-
 
     </script>
 
