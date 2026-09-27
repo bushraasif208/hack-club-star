@@ -19,18 +19,20 @@
             text-align: center;
             background: #111;
             color: white;
-            padding: 30px 15px;
+            padding: 25px 15px;
         }
 
         h1 {
-            font-size: 48px;
+            font-size: 45px;
             margin-bottom: 10px;
         }
 
         #subtitle {
-            font-size: 20px;
             color: #ccc;
+            font-size: 20px;
         }
+
+        /* MENU */
 
         #menu {
             max-width: 750px;
@@ -42,6 +44,7 @@
             max-width: 600px;
             margin: 15px auto;
             padding: 25px;
+
             display: block;
 
             font-size: 24px;
@@ -55,7 +58,7 @@
 
             cursor: pointer;
 
-            transition: transform 0.15s;
+            transition: 0.15s;
         }
 
         .gameButton:hover {
@@ -64,11 +67,15 @@
 
         .gameDescription {
             display: block;
+            margin-top: 8px;
+
             font-size: 16px;
             font-weight: normal;
-            margin-top: 8px;
+
             color: #ccc;
         }
+
+        /* GAME SCREEN */
 
         #gameScreen {
             display: none;
@@ -91,7 +98,7 @@
 
             width: 90%;
             max-width: 700px;
-            height: 350px;
+            min-height: 350px;
 
             margin: 30px auto;
 
@@ -103,6 +110,8 @@
             overflow: hidden;
         }
 
+        /* GAME 1 */
+
         #target {
             display: none;
 
@@ -113,21 +122,24 @@
 
             border-radius: 50%;
 
-            font-size: 30px;
-
             border: none;
+
+            font-size: 30px;
 
             cursor: pointer;
         }
 
+        /* GAME 2 */
+
         #dangerGame {
             display: none;
-            padding: 50px 10px;
+            padding: 60px 10px;
         }
 
         .safeButton,
         .dangerButton {
             padding: 18px 25px;
+
             margin: 10px;
 
             font-size: 20px;
@@ -148,6 +160,65 @@
             color: white;
         }
 
+        /* GAME 3 */
+
+        #memoryGame {
+            display: none;
+
+            padding: 30px 10px;
+        }
+
+        #pattern {
+            font-size: 45px;
+
+            min-height: 70px;
+
+            margin: 20px;
+        }
+
+        #memoryMessage {
+            font-size: 20px;
+
+            min-height: 30px;
+        }
+
+        #memoryButtons {
+            display: flex;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            max-width: 500px;
+
+            margin: 25px auto;
+        }
+
+        .memoryButton {
+            width: 80px;
+            height: 80px;
+
+            font-size: 35px;
+
+            border: 3px solid white;
+
+            border-radius: 15px;
+
+            background: #333;
+
+            color: white;
+
+            cursor: pointer;
+        }
+
+        .memoryButton:hover {
+            transform: scale(1.08);
+        }
+
+        /* BACK */
+
         #backButton {
             margin-top: 20px;
 
@@ -156,6 +227,7 @@
             font-size: 18px;
 
             border: none;
+
             border-radius: 10px;
 
             cursor: pointer;
@@ -169,7 +241,9 @@
 <body>
 
 
-    <!-- HOME MENU -->
+    <!-- ========================= -->
+    <!-- GAME SELECTION MENU -->
+    <!-- ========================= -->
 
     <div id="menu">
 
@@ -185,7 +259,7 @@
             🎯 GAME 1
 
             <span class="gameDescription">
-                Click the moving target!
+                Catch the moving target!
             </span>
 
         </button>
@@ -201,44 +275,67 @@
 
         </button>
 
+
+        <button class="gameButton" id="game3Button">
+
+            🧠 GAME 3
+
+            <span class="gameDescription">
+                Copy the pattern from memory!
+            </span>
+
+        </button>
+
     </div>
 
 
 
+    <!-- ========================= -->
     <!-- GAME SCREEN -->
+    <!-- ========================= -->
 
     <div id="gameScreen">
 
         <h1>🎮 WarioWare AI</h1>
 
+
         <p id="challenge">
             Challenge
         </p>
+
 
         <p id="timer">
             ⏱️ Time: 15
         </p>
 
+
         <p id="score">
             🏆 Score: 0
         </p>
+
 
         <p id="lives">
             ❤️ Lives: 3
         </p>
 
 
+
         <div id="gameArea">
 
 
+            <!-- ================= -->
             <!-- GAME 1 -->
+            <!-- ================= -->
 
             <button id="target">
                 🎯
             </button>
 
 
+
+            <!-- ================= -->
             <!-- GAME 2 -->
+            <!-- ================= -->
 
             <div id="dangerGame">
 
@@ -260,7 +357,50 @@
 
             </div>
 
+
+
+            <!-- ================= -->
+            <!-- GAME 3 -->
+            <!-- ================= -->
+
+            <div id="memoryGame">
+
+                <h2>🧠 Remember the pattern!</h2>
+
+                <div id="pattern">
+                    👀
+                </div>
+
+                <p id="memoryMessage">
+                    Watch carefully...
+                </p>
+
+
+                <div id="memoryButtons">
+
+                    <button class="memoryButton" data-symbol="🔴">
+                        🔴
+                    </button>
+
+                    <button class="memoryButton" data-symbol="🔵">
+                        🔵
+                    </button>
+
+                    <button class="memoryButton" data-symbol="🟢">
+                        🟢
+                    </button>
+
+                    <button class="memoryButton" data-symbol="🟡">
+                        🟡
+                    </button>
+
+                </div>
+
+            </div>
+
+
         </div>
+
 
 
         <button id="backButton">
@@ -274,7 +414,9 @@
     <script>
 
 
-        // GAME VARIABLES
+        /* =========================
+           GAME VARIABLES
+        ========================= */
 
         let timeLeft = 15;
 
@@ -282,17 +424,28 @@
 
         let lives = 3;
 
-        let gameRunning = false;
-
         let currentGame = 0;
+
+        let gameRunning = false;
 
         let gameTimer;
 
         let moveTimer;
 
 
+        /* GAME 3 VARIABLES */
 
-        // ELEMENTS
+        let memoryPattern = [];
+
+        let playerPattern = [];
+
+        let memoryRound = 1;
+
+
+
+        /* =========================
+           ELEMENTS
+        ========================= */
 
         const menu =
             document.getElementById("menu");
@@ -300,11 +453,16 @@
         const gameScreen =
             document.getElementById("gameScreen");
 
+
         const game1Button =
             document.getElementById("game1Button");
 
         const game2Button =
             document.getElementById("game2Button");
+
+        const game3Button =
+            document.getElementById("game3Button");
+
 
         const challenge =
             document.getElementById("challenge");
@@ -318,39 +476,62 @@
         const livesDisplay =
             document.getElementById("lives");
 
-        const target =
-            document.getElementById("target");
-
-        const dangerGame =
-            document.getElementById("dangerGame");
 
         const gameArea =
             document.getElementById("gameArea");
 
+
+        const target =
+            document.getElementById("target");
+
+
+        const dangerGame =
+            document.getElementById("dangerGame");
+
+
+        const memoryGame =
+            document.getElementById("memoryGame");
+
+
+        const patternDisplay =
+            document.getElementById("pattern");
+
+
+        const memoryMessage =
+            document.getElementById("memoryMessage");
+
+
+        const memoryButtons =
+            document.querySelectorAll(".memoryButton");
+
+
         const backButton =
             document.getElementById("backButton");
 
-        const safeButtons =
-            document.querySelectorAll(".safeButton");
-
-        const dangerButton =
-            document.querySelector(".dangerButton");
 
 
-
-        // HIDE MINI-GAMES
+        /* =========================
+           HIDE GAMES
+        ========================= */
 
         function hideGames() {
 
-            target.style.display = "none";
+            target.style.display =
+                "none";
 
-            dangerGame.style.display = "none";
+            dangerGame.style.display =
+                "none";
+
+            memoryGame.style.display =
+                "none";
 
         }
 
 
 
-        // MOVE TARGET
+        /* =========================
+           MOVE TARGET
+        ========================= */
 
         function moveTarget() {
 
@@ -363,10 +544,15 @@
                 target.offsetHeight;
 
             const randomX =
-                Math.floor(Math.random() * maxX);
+                Math.floor(
+                    Math.random() * maxX
+                );
 
             const randomY =
-                Math.floor(Math.random() * maxY);
+                Math.floor(
+                    Math.random() * maxY
+                );
+
 
             target.style.left =
                 randomX + "px";
@@ -378,7 +564,9 @@
 
 
 
-        // START SELECTED GAME
+        /* =========================
+           START GAME
+        ========================= */
 
         function startGame(gameNumber) {
 
@@ -394,14 +582,17 @@
 
             lives = 3;
 
-            currentGame = gameNumber;
+            currentGame =
+                gameNumber;
 
             gameRunning = true;
 
 
-            menu.style.display = "none";
+            menu.style.display =
+                "none";
 
-            gameScreen.style.display = "block";
+            gameScreen.style.display =
+                "block";
 
 
             scoreDisplay.textContent =
@@ -418,7 +609,9 @@
 
 
 
-            // GAME 1
+            /* =====================
+               GAME 1
+            ===================== */
 
             if (currentGame === 1) {
 
@@ -436,7 +629,9 @@
                         function () {
 
                             if (gameRunning) {
+
                                 moveTarget();
+
                             }
 
                         },
@@ -447,7 +642,9 @@
 
 
 
-            // GAME 2
+            /* =====================
+               GAME 2
+            ===================== */
 
             if (currentGame === 2) {
 
@@ -461,7 +658,27 @@
 
 
 
-            // TIMER
+            /* =====================
+               GAME 3
+            ===================== */
+
+            if (currentGame === 3) {
+
+                challenge.textContent =
+                    "🧠 REMEMBER THE PATTERN!";
+
+                memoryGame.style.display =
+                    "block";
+
+                startMemoryGame();
+
+            }
+
+
+
+            /* =====================
+               TIMER
+            ===================== */
 
             gameTimer =
                 setInterval(
@@ -491,7 +708,9 @@
 
 
 
-        // GAME 1 BUTTON
+        /* =========================
+           GAME 1 BUTTON
+        ========================= */
 
         game1Button.addEventListener(
             "click",
@@ -504,7 +723,9 @@
 
 
 
-        // GAME 2 BUTTON
+        /* =========================
+           GAME 2 BUTTON
+        ========================= */
 
         game2Button.addEventListener(
             "click",
@@ -517,14 +738,33 @@
 
 
 
-        // TARGET CLICK
+        /* =========================
+           GAME 3 BUTTON
+        ========================= */
+
+        game3Button.addEventListener(
+            "click",
+            function () {
+
+                startGame(3);
+
+            }
+        );
+
+
+
+        /* =========================
+           GAME 1 CLICK
+        ========================= */
 
         target.addEventListener(
             "click",
             function () {
 
-                if (!gameRunning ||
-                    currentGame !== 1) {
+                if (
+                    !gameRunning ||
+                    currentGame !== 1
+                ) {
                     return;
                 }
 
@@ -548,7 +788,15 @@
 
 
 
-        // SAFE BUTTONS
+        /* =========================
+           GAME 2 SAFE BUTTONS
+        ========================= */
+
+        const safeButtons =
+            document.querySelectorAll(
+                ".safeButton"
+            );
+
 
         safeButtons.forEach(
             function (button) {
@@ -557,8 +805,10 @@
                     "click",
                     function () {
 
-                        if (!gameRunning ||
-                            currentGame !== 2) {
+                        if (
+                            !gameRunning ||
+                            currentGame !== 2
+                        ) {
                             return;
                         }
 
@@ -597,14 +847,24 @@
 
 
 
-        // DANGER BUTTON
+        /* =========================
+           GAME 2 DANGER
+        ========================= */
+
+        const dangerButton =
+            document.querySelector(
+                ".dangerButton"
+            );
+
 
         dangerButton.addEventListener(
             "click",
             function () {
 
-                if (!gameRunning ||
-                    currentGame !== 2) {
+                if (
+                    !gameRunning ||
+                    currentGame !== 2
+                ) {
                     return;
                 }
 
@@ -635,7 +895,252 @@
 
 
 
-        // END GAME
+        /* =========================
+           GAME 3
+           MEMORY GAME
+        ========================= */
+
+
+        function startMemoryGame() {
+
+            memoryPattern = [];
+
+            playerPattern = [];
+
+            memoryRound = 1;
+
+
+            nextMemoryRound();
+
+        }
+
+
+
+        function nextMemoryRound() {
+
+            playerPattern = [];
+
+
+            const symbols = [
+                "🔴",
+                "🔵",
+                "🟢",
+                "🟡"
+            ];
+
+
+            memoryPattern = [];
+
+
+            const patternLength =
+                Math.min(
+                    2 + memoryRound,
+                    6
+                );
+
+
+            for (
+                let i = 0;
+                i < patternLength;
+                i++
+            ) {
+
+                const randomIndex =
+                    Math.floor(
+                        Math.random() *
+                        symbols.length
+                    );
+
+
+                memoryPattern.push(
+                    symbols[randomIndex]
+                );
+
+            }
+
+
+            patternDisplay.textContent =
+                memoryPattern.join(" ");
+
+
+            memoryMessage.textContent =
+                "👀 Remember it!";
+
+
+            memoryButtons.forEach(
+                function (button) {
+
+                    button.disabled =
+                        true;
+
+                }
+            );
+
+
+            setTimeout(
+                function () {
+
+                    patternDisplay.textContent =
+                        "❓ ❓ ❓";
+
+                    memoryMessage.textContent =
+                        "🎯 Now copy it!";
+
+
+                    memoryButtons.forEach(
+                        function (button) {
+
+                            button.disabled =
+                                false;
+
+                        }
+                    );
+
+                },
+                1800
+            );
+
+        }
+
+
+
+        /* =========================
+           MEMORY BUTTON CLICK
+        ========================= */
+
+        memoryButtons.forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        if (
+                            !gameRunning ||
+                            currentGame !== 3
+                        ) {
+                            return;
+                        }
+
+
+                        const symbol =
+                            button.dataset.symbol;
+
+
+                        playerPattern.push(
+                            symbol
+                        );
+
+
+                        const currentIndex =
+                            playerPattern.length - 1;
+
+
+                        /* WRONG */
+
+                        if (
+                            symbol !==
+                            memoryPattern[currentIndex]
+                        ) {
+
+                            lives--;
+
+
+                            livesDisplay.textContent =
+                                "❤️ Lives: " +
+                                lives;
+
+
+                            memoryMessage.textContent =
+                                "❌ WRONG!";
+
+
+                            playerPattern = [];
+
+
+                            if (lives <= 0) {
+
+                                endGame(
+                                    "💀 GAME OVER! SCORE: " +
+                                    score
+                                );
+
+                                return;
+
+                            }
+
+
+                            setTimeout(
+                                function () {
+
+                                    nextMemoryRound();
+
+                                },
+                                800
+                            );
+
+
+                            return;
+
+                        }
+
+
+                        /* CORRECT SYMBOL */
+
+                        memoryMessage.textContent =
+                            "✅ Correct!";
+
+
+                        /* COMPLETE PATTERN */
+
+                        if (
+                            playerPattern.length ===
+                            memoryPattern.length
+                        ) {
+
+                            const points =
+                                memoryPattern.length *
+                                100;
+
+
+                            score += points;
+
+
+                            scoreDisplay.textContent =
+                                "🏆 Score: " +
+                                score;
+
+
+                            memoryMessage.textContent =
+                                "🔥 PERFECT! +" +
+                                points;
+
+
+                            memoryRound++;
+
+
+                            setTimeout(
+                                function () {
+
+                                    nextMemoryRound();
+
+                                },
+                                800
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+
+        /* =========================
+           END GAME
+        ========================= */
 
         function endGame(message) {
 
@@ -643,9 +1148,12 @@
 
             clearInterval(moveTimer);
 
+
             gameRunning = false;
 
+
             hideGames();
+
 
             challenge.textContent =
                 message;
@@ -654,7 +1162,9 @@
 
 
 
-        // BACK TO MENU
+        /* =========================
+           BACK TO MENU
+        ========================= */
 
         backButton.addEventListener(
             "click",
@@ -664,12 +1174,16 @@
 
                 clearInterval(moveTimer);
 
+
                 gameRunning = false;
+
 
                 hideGames();
 
+
                 gameScreen.style.display =
                     "none";
+
 
                 menu.style.display =
                     "block";
