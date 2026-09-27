@@ -39,45 +39,56 @@
             width: 90%;
             max-width: 700px;
             height: 350px;
-
             margin: 30px auto;
-
             border: 3px solid white;
             border-radius: 15px;
-
             background: #222;
-
             overflow: hidden;
         }
 
         #startButton {
             padding: 15px 30px;
-
             font-size: 20px;
-
             cursor: pointer;
-
             border: none;
             border-radius: 10px;
         }
 
         #target {
             display: none;
-
             position: absolute;
-
             width: 70px;
             height: 70px;
-
             border-radius: 50%;
-
             font-size: 30px;
-
             padding: 0;
-
             border: none;
-
             cursor: pointer;
+        }
+
+        #dangerGame {
+            display: none;
+            padding: 30px;
+        }
+
+        .safeButton,
+        .dangerButton {
+            padding: 18px 25px;
+            margin: 10px;
+            font-size: 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .safeButton {
+            background: white;
+            color: black;
+        }
+
+        .dangerButton {
+            background: red;
+            color: white;
         }
 
     </style>
@@ -112,11 +123,37 @@
         START GAME
     </button>
 
+
     <div id="gameArea">
+
+        <!-- GAME 1 -->
 
         <button id="target">
             🎯
         </button>
+
+
+        <!-- GAME 2 -->
+
+        <div id="dangerGame">
+
+            <button class="safeButton">
+                🟢 SAFE
+            </button>
+
+            <button class="safeButton">
+                🟢 SAFE
+            </button>
+
+            <button class="dangerButton">
+                🔴 DANGER
+            </button>
+
+            <button class="safeButton">
+                🟢 SAFE
+            </button>
+
+        </div>
 
     </div>
 
@@ -135,12 +172,14 @@
 
         let gameRunning = false;
 
+        let currentGame = 0;
+
         let gameTimer;
 
         let moveTimer;
 
 
-        // GET HTML ELEMENTS
+        // HTML ELEMENTS
 
         const challenge =
             document.getElementById("challenge");
@@ -163,8 +202,17 @@
         const target =
             document.getElementById("target");
 
+        const dangerGame =
+            document.getElementById("dangerGame");
+
         const gameArea =
             document.getElementById("gameArea");
+
+        const safeButtons =
+            document.querySelectorAll(".safeButton");
+
+        const dangerButton =
+            document.querySelector(".dangerButton");
 
 
         // MOVE TARGET
@@ -193,6 +241,18 @@
         }
 
 
+        // HIDE ALL MINI-GAMES
+
+        function hideGames() {
+
+            target.style.display =
+                "none";
+
+            dangerGame.style.display =
+                "none";
+        }
+
+
         // START GAME
 
         startButton.addEventListener(
@@ -204,7 +264,7 @@
                 }
 
 
-                // RESET GAME
+                // RESET
 
                 timeLeft = 15;
 
@@ -217,12 +277,6 @@
                 gameRunning = true;
 
 
-                // UPDATE DISPLAY
-
-                
-                    timer.textContent =
-    "⏱️ Time: 15";
-
                 scoreDisplay.textContent =
                     "🏆 Score: 0";
 
@@ -232,47 +286,68 @@
                 levelDisplay.textContent =
                     "⭐ Level: 1";
 
-
-                challenge.textContent =
-                    "🎯 CLICK THE TARGET!";
+                timer.textContent =
+                    "⏱️ Time: 15";
 
 
                 startButton.textContent =
                     "GAME RUNNING...";
 
 
-                target.style.display =
-                    "block";
-
-
-                moveTarget();
-
-
-                // CLEAR OLD TIMERS
-
                 clearInterval(gameTimer);
 
                 clearInterval(moveTimer);
 
 
-                // TARGET MOVEMENT
+                // RANDOM MINI-GAME
 
-                moveTimer =
-                    setInterval(
-                        function () {
-
-                            if (gameRunning) {
-
-                                moveTarget();
-
-                            }
-
-                        },
-                        700
-                    );
+                currentGame =
+                    Math.floor(Math.random() * 2) + 1;
 
 
-                // COUNTDOWN
+                hideGames();
+
+
+                // GAME 1
+
+                if (currentGame === 1) {
+
+                    challenge.textContent =
+                        "🎯 CLICK THE TARGET!";
+
+                    target.style.display =
+                        "block";
+
+                    moveTarget();
+
+
+                    moveTimer =
+                        setInterval(
+                            function () {
+
+                                if (gameRunning) {
+                                    moveTarget();
+                                }
+
+                            },
+                            700
+                        );
+                }
+
+
+                // GAME 2
+
+                if (currentGame === 2) {
+
+                    challenge.textContent =
+                        "🚨 DON'T CLICK THE RED BUTTON!";
+
+                    dangerGame.style.display =
+                        "block";
+                }
+
+
+                // TIMER
 
                 gameTimer =
                     setInterval(
@@ -288,7 +363,7 @@
                             if (timeLeft <= 0) {
 
                                 endGame(
-                                    "💥 TIME'S UP! FINAL SCORE: " +
+                                    "💥 TIME'S UP! SCORE: " +
                                     score
                                 );
 
@@ -302,18 +377,17 @@
         );
 
 
-        // TARGET CLICK
+        // GAME 1 TARGET CLICK
 
         target.addEventListener(
             "click",
             function () {
 
-                if (!gameRunning) {
+                if (!gameRunning ||
+                    currentGame !== 1) {
                     return;
                 }
 
-
-                // ADD SCORE
 
                 score += 100;
 
@@ -327,98 +401,68 @@
                     "🔥 NICE! +100";
 
 
-                // LEVEL 2
-
-                if (
-                    score >= 500 &&
-                    level === 1
-                ) {
-
-                    level = 2;
-
-                    levelDisplay.textContent =
-                        "⭐ Level: 2";
-
-                    challenge.textContent =
-                        "🔥 LEVEL 2! FASTER!";
-
-
-                    clearInterval(moveTimer);
-
-
-                    moveTimer =
-                        setInterval(
-                            function () {
-
-                                if (gameRunning) {
-
-                                    moveTarget();
-
-                                }
-
-                            },
-                            450
-                        );
-                }
-
-
-                // LEVEL 3
-
-                if (
-                    score >= 1000 &&
-                    level === 2
-                ) {
-
-                    level = 3;
-
-                    levelDisplay.textContent =
-                        "⭐ Level: 3";
-
-                    challenge.textContent =
-                        "💀 LEVEL 3! SUPER FAST!";
-
-
-                    clearInterval(moveTimer);
-
-
-                    moveTimer =
-                        setInterval(
-                            function () {
-
-                                if (gameRunning) {
-
-                                    moveTarget();
-
-                                }
-
-                            },
-                            250
-                        );
-                }
-
-
-                // MOVE TARGET
-
                 moveTarget();
 
             }
         );
 
 
-        // MISSED TARGET
+        // GAME 2 SAFE BUTTON
 
-        gameArea.addEventListener(
+        safeButtons.forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        if (!gameRunning ||
+                            currentGame !== 2) {
+                            return;
+                        }
+
+
+                        score += 100;
+
+
+                        scoreDisplay.textContent =
+                            "🏆 Score: " +
+                            score;
+
+
+                        challenge.textContent =
+                            "🟢 SAFE! +100";
+
+
+                        button.style.visibility =
+                            "hidden";
+
+
+                        setTimeout(
+                            function () {
+
+                                button.style.visibility =
+                                    "visible";
+
+                            },
+                            300
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+        // GAME 2 DANGER BUTTON
+
+        dangerButton.addEventListener(
             "click",
-            function (event) {
+            function () {
 
-                if (!gameRunning) {
-                    return;
-                }
-
-
-                // Ignore target clicks
-
-                if (event.target === target) {
+                if (!gameRunning ||
+                    currentGame !== 2) {
                     return;
                 }
 
@@ -432,13 +476,13 @@
 
 
                 challenge.textContent =
-                    "❌ MISSED! -1 LIFE";
+                    "💥 OH NO! DANGER!";
 
 
                 if (lives <= 0) {
 
                     endGame(
-                        "💀 GAME OVER! FINAL SCORE: " +
+                        "💀 GAME OVER! SCORE: " +
                         score
                     );
 
@@ -456,17 +500,12 @@
 
             clearInterval(moveTimer);
 
-
             gameRunning = false;
 
-
-            target.style.display =
-                "none";
-
+            hideGames();
 
             challenge.textContent =
                 message;
-
 
             startButton.textContent =
                 "PLAY AGAIN";
