@@ -1,313 +1,241 @@
 ```html
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WarioWare AI</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-* {
-    box-sizing: border-box;
-}
+    <title>WarioWare AI</title>
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #ff4ecd, #7b2cff);
-    color: white;
-    text-align: center;
-    min-height: 100vh;
-}
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #ff4ecd, #6c2cff);
+            color: white;
+        }
 
-h1 {
-    font-size: 45px;
-    margin: 25px 0 10px;
-}
+        h1 {
+            font-size: 42px;
+        }
 
-h2 {
-    margin: 10px;
-}
+        button {
+            padding: 15px 25px;
+            margin: 10px;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-p {
-    font-size: 18px;
-}
+        .game-button {
+            display: block;
+            width: 300px;
+            margin: 15px auto;
+        }
 
-button {
-    border: none;
-    border-radius: 15px;
-    padding: 15px 25px;
-    margin: 8px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    background: white;
-    color: #7b2cff;
-    transition: 0.15s;
-}
+        #gameScreen {
+            display: none;
+        }
 
-button:hover {
-    transform: scale(1.08);
-}
+        .game {
+            display: none;
+            background: rgba(0,0,0,0.25);
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 650px;
+            min-height: 300px;
+            border-radius: 25px;
+        }
 
-.menu {
-    max-width: 700px;
-    margin: auto;
-    padding: 20px;
-}
+        .active {
+            display: block;
+        }
 
-.gameButton {
-    display: block;
-    width: 90%;
-    max-width: 500px;
-    margin: 12px auto;
-    font-size: 20px;
-}
+        #target {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: lime;
+            position: fixed;
+            display: none;
+        }
 
-#gameScreen {
-    display: none;
-    padding: 15px;
-}
+        .red {
+            background: red;
+            color: white;
+        }
 
-.stats {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    flex-wrap: wrap;
-    font-size: 20px;
-    font-weight: bold;
-    margin: 15px;
-}
+        .safe {
+            background: limegreen;
+            color: white;
+        }
 
-.gameBox {
-    max-width: 700px;
-    min-height: 350px;
-    margin: 20px auto;
-    padding: 25px;
-    background: rgba(0,0,0,0.25);
-    border-radius: 25px;
-}
+        #patternDisplay {
+            font-size: 50px;
+            margin: 30px;
+        }
 
-#target {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    background: #00ff88;
-    position: absolute;
-    cursor: pointer;
-    display: none;
-}
-
-.red {
-    background: #ff1744 !important;
-    color: white !important;
-}
-
-.safe {
-    background: #00e676;
-    color: white;
-}
-
-.choice {
-    min-width: 110px;
-}
-
-#patternDisplay {
-    font-size: 55px;
-    margin: 30px;
-    min-height: 70px;
-}
-
-#glamQuestion {
-    font-size: 28px;
-    font-weight: bold;
-    margin: 20px;
-}
-
-#glamTimer {
-    font-size: 35px;
-    font-weight: bold;
-}
-
-#glamButtons button {
-    min-width: 120px;
-}
-
-#chaosQuestion {
-    font-size: 30px;
-    font-weight: bold;
-}
-
-#worldQuestion {
-    font-size: 28px;
-    font-weight: bold;
-}
-
-#result {
-    font-size: 22px;
-    font-weight: bold;
-    min-height: 35px;
-}
-
-.hidden {
-    display: none !important;
-}
-
-.backButton {
-    background: #222;
-    color: white;
-}
-
-@media(max-width:600px) {
-    h1 {
-        font-size: 34px;
-    }
-
-    button {
-        font-size: 16px;
-        padding: 12px 18px;
-    }
-
-    .gameBox {
-        min-height: 300px;
-    }
-}
-</style>
+        #message {
+            font-size: 25px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- ================= MENU ================= -->
+<!-- MENU -->
 
-<div id="menu" class="menu">
+<div id="menu">
 
     <h1>🎮 WarioWare AI</h1>
 
-    <p>⚡ Tiny games. Fast reactions. TOTAL CHAOS! ⚡</p>
+    <p>⚡ Tiny Games. Fast Reactions. TOTAL CHAOS! ⚡</p>
 
-    <button id="game1Button" class="gameButton">
-        🎯 Game 1 — Catch It!
+    <button class="game-button" onclick="startGame(1)">
+        🎯 Game 1 — Catch It
     </button>
 
-    <button id="game2Button" class="gameButton">
-        🔴 Game 2 — Don't Click Red!
+    <button class="game-button" onclick="startGame(2)">
+        🔴 Game 2 — Don't Click Red
     </button>
 
-    <button id="game3Button" class="gameButton">
-        🧠 Game 3 — Copy The Pattern!
+    <button class="game-button" onclick="startGame(3)">
+        🧠 Game 3 — Copy Pattern
     </button>
 
-    <button id="game4Button" class="gameButton">
-        🌈 Game 4 — Chaos Mode!
+    <button class="game-button" onclick="startGame(4)">
+        🌈 Game 4 — Chaos Mode
     </button>
 
-    <button id="game5Button" class="gameButton">
-        🌍 Game 5 — Save The World!
+    <button class="game-button" onclick="startGame(5)">
+        🌍 Game 5 — Save The World
     </button>
 
-    <button id="game6Button" class="gameButton">
-        💅 Game 6 — Glam Panic!
+    <button class="game-button" onclick="startGame(6)">
+        💅 Game 6 — Glam Panic
     </button>
 
 </div>
 
 
-<!-- ================= GAME SCREEN ================= -->
+<!-- GAME SCREEN -->
 
 <div id="gameScreen">
 
-    <h1 id="gameTitle">Game</h1>
+    <h1 id="gameTitle"></h1>
 
-    <div class="stats">
-        <span>⏱️ Time: <span id="time">15</span></span>
-        <span>⭐ Score: <span id="score">0</span></span>
-        <span>❤️ Lives: <span id="lives">3</span></span>
-    </div>
+    <h2>
+        ⭐ Score:
+        <span id="score">0</span>
+    </h2>
 
-    <div class="gameBox">
-
-        <!-- GAME 1 -->
-        <div id="game1" class="game hidden">
-            <h2>🎯 CATCH IT!</h2>
-            <p>Click the moving target!</p>
-            <div id="target"></div>
-        </div>
+    <p>
+        ⏱️ Time:
+        <span id="time">15</span>
+    </p>
 
 
-        <!-- GAME 2 -->
-        <div id="game2" class="game hidden">
-            <h2>🔴 DON'T CLICK RED!</h2>
-            <p>Click safe buttons. NEVER click red!</p>
+    <!-- GAME 1 -->
 
-            <div id="redButtons"></div>
-        </div>
+    <div id="game1" class="game">
 
+        <h2>🎯 CATCH IT!</h2>
 
-        <!-- GAME 3 -->
-        <div id="game3" class="game hidden">
-            <h2>🧠 COPY THE PATTERN!</h2>
-            <p id="patternInstruction">Watch carefully...</p>
+        <p>Click the green circle!</p>
 
-            <div id="patternDisplay"></div>
-
-            <div id="patternButtons"></div>
-        </div>
-
-
-        <!-- GAME 4 -->
-        <div id="game4" class="game hidden">
-
-            <h2>🌈 CHAOS MODE!</h2>
-
-            <div id="chaosQuestion">
-                GET READY!
-            </div>
-
-            <div id="chaosButtons"></div>
-
-        </div>
-
-
-        <!-- GAME 5 -->
-        <div id="game5" class="game hidden">
-
-            <h2>🌍 SAVE THE WORLD!</h2>
-
-            <div id="worldQuestion">
-                🌎 THE WORLD NEEDS YOU!
-            </div>
-
-            <div id="worldButtons"></div>
-
-        </div>
-
-
-        <!-- GAME 6 -->
-        <div id="game6" class="game hidden">
-
-            <h2>💅 GLAM PANIC!</h2>
-
-            <div id="glamQuestion">
-                GET READY!
-            </div>
-
-            <div id="glamTimer">
-                0
-            </div>
-
-            <div id="glamButtons"></div>
-
-            <p id="glamCombo">
-                🔥 Combo: 0
-            </p>
-
-        </div>
-
-        <div id="result"></div>
+        <div id="target"></div>
 
     </div>
 
-    <button class="backButton" id="backButton">
+
+    <!-- GAME 2 -->
+
+    <div id="game2" class="game">
+
+        <h2>🔴 DON'T CLICK RED!</h2>
+
+        <p>Click a green button!</p>
+
+        <div id="buttons2"></div>
+
+    </div>
+
+
+    <!-- GAME 3 -->
+
+    <div id="game3" class="game">
+
+        <h2>🧠 COPY THE PATTERN!</h2>
+
+        <p id="patternMessage">
+            Watch the pattern!
+        </p>
+
+        <div id="patternDisplay"></div>
+
+        <div id="patternButtons"></div>
+
+    </div>
+
+
+    <!-- GAME 4 -->
+
+    <div id="game4" class="game">
+
+        <h2>🌈 CHAOS MODE!</h2>
+
+        <p id="chaosQuestion">
+            Click the correct color!
+        </p>
+
+        <div id="chaosButtons"></div>
+
+    </div>
+
+
+    <!-- GAME 5 -->
+
+    <div id="game5" class="game">
+
+        <h2>🌍 SAVE THE WORLD!</h2>
+
+        <p id="worldQuestion">
+            🚨 EMERGENCY!
+        </p>
+
+        <div id="worldButtons"></div>
+
+    </div>
+
+
+    <!-- GAME 6 -->
+
+    <div id="game6" class="game">
+
+        <h2>💅 GLAM PANIC!</h2>
+
+        <p id="glamQuestion">
+            Choose the correct item!
+        </p>
+
+        <h2 id="glamTimer">2.0</h2>
+
+        <div id="glamButtons"></div>
+
+        <p id="combo">
+            🔥 Combo: 0
+        </p>
+
+    </div>
+
+
+    <p id="message"></p>
+
+    <button onclick="backToMenu()">
         ⬅️ Back To Menu
     </button>
 
@@ -316,262 +244,209 @@ button:hover {
 
 <script>
 
-/* =========================================
+/* =====================================
    GLOBAL VARIABLES
-========================================= */
+===================================== */
 
-let timeLeft = 15;
-let score = 0;
-let lives = 3;
 let currentGame = 0;
+let score = 0;
+let time = 15;
 
-let gameRunning = false;
+let gameTimer = null;
+let gameInterval = null;
 
-let gameTimer;
-let moveTimer;
-let roundTimer;
+let pattern = [];
+let playerPattern = [];
 
-const menu = document.getElementById("menu");
-const gameScreen = document.getElementById("gameScreen");
-
-const timeDisplay = document.getElementById("time");
-const scoreDisplay = document.getElementById("score");
-const livesDisplay = document.getElementById("lives");
-
-const gameTitle = document.getElementById("gameTitle");
-const result = document.getElementById("result");
+let glamTimer = null;
+let combo = 0;
 
 
-/* =========================================
-   GAME 6 VARIABLES
-========================================= */
-
-let glamAnswer = "";
-let glamTimer = null;          // TIMER HANDLE
-let glamRound = 0;
-let glamCombo = 0;
-let glamFinal = false;
-
-
-/* =========================================
-   MENU BUTTONS
-========================================= */
-
-document.getElementById("game1Button").onclick = () => startGame(1);
-document.getElementById("game2Button").onclick = () => startGame(2);
-document.getElementById("game3Button").onclick = () => startGame(3);
-document.getElementById("game4Button").onclick = () => startGame(4);
-document.getElementById("game5Button").onclick = () => startGame(5);
-document.getElementById("game6Button").onclick = () => startGame(6);
-
-document.getElementById("backButton").onclick = backToMenu;
-
-
-/* =========================================
+/* =====================================
    START GAME
-========================================= */
+===================================== */
 
 function startGame(number) {
 
-    clearAllTimers();
-
     currentGame = number;
 
-    timeLeft = 15;
     score = 0;
-    lives = 3;
+    time = 15;
 
-    gameRunning = true;
+    document.getElementById("score").textContent = score;
+    document.getElementById("time").textContent = time;
 
-    timeDisplay.textContent = timeLeft;
-    scoreDisplay.textContent = score;
-    livesDisplay.textContent = lives;
+    document.getElementById("menu").style.display = "none";
 
-    menu.style.display = "none";
-    gameScreen.style.display = "block";
+    document.getElementById("gameScreen").style.display = "block";
 
-    document.querySelectorAll(".game").forEach(game => {
-        game.classList.add("hidden");
+    document.querySelectorAll(".game").forEach(function(game) {
+        game.classList.remove("active");
     });
 
-    document.getElementById("game" + number).classList.remove("hidden");
+    document.getElementById("game" + number)
+        .classList.add("active");
 
-    result.textContent = "";
+    document.getElementById("gameTitle").textContent =
+        "Game " + number;
 
-    gameTitle.textContent = getGameTitle(number);
+    clearAllTimers();
 
-    startMainTimer();
+    startTimer();
 
-    if (number === 1) startGame1();
-    if (number === 2) startGame2();
-    if (number === 3) startGame3();
-    if (number === 4) startGame4();
-    if (number === 5) startGame5();
-    if (number === 6) startGame6();
+
+    if (number === 1) {
+        game1();
+    }
+
+    if (number === 2) {
+        game2();
+    }
+
+    if (number === 3) {
+        game3();
+    }
+
+    if (number === 4) {
+        game4();
+    }
+
+    if (number === 5) {
+        game5();
+    }
+
+    if (number === 6) {
+        game6();
+    }
 }
 
 
-/* =========================================
-   GAME TITLES
-========================================= */
-
-function getGameTitle(number) {
-
-    const titles = {
-        1: "🎯 Catch It!",
-        2: "🔴 Don't Click Red!",
-        3: "🧠 Copy The Pattern!",
-        4: "🌈 Chaos Mode!",
-        5: "🌍 Save The World!",
-        6: "💅 Glam Panic!"
-    };
-
-    return titles[number];
-}
-
-
-/* =========================================
+/* =====================================
    MAIN TIMER
-========================================= */
+===================================== */
 
-function startMainTimer() {
+function startTimer() {
 
-    clearInterval(gameTimer);
+    gameTimer = setInterval(function() {
 
-    gameTimer = setInterval(() => {
+        time--;
 
-        if (!gameRunning) return;
+        document.getElementById("time").textContent = time;
 
-        timeLeft--;
+        if (time <= 0) {
 
-        timeDisplay.textContent = timeLeft;
+            alert(
+                "🎮 Game Over!\n\nScore: " + score
+            );
 
-        if (timeLeft <= 0) {
-            endGame();
+            backToMenu();
         }
 
     }, 1000);
 }
 
 
-/* =========================================
+/* =====================================
    GAME 1
-========================================= */
+===================================== */
 
-function startGame1() {
+function game1() {
 
-    const target = document.getElementById("target");
+    const target =
+        document.getElementById("target");
 
     target.style.display = "block";
 
     moveTarget();
 
-    clearInterval(moveTimer);
-
-    moveTimer = setInterval(moveTarget, 700);
-
-    target.onclick = () => {
-
-        if (!gameRunning) return;
+    target.onclick = function() {
 
         score += 100;
 
-        scoreDisplay.textContent = score;
+        document.getElementById("score")
+            .textContent = score;
 
         moveTarget();
     };
+
+    gameInterval = setInterval(
+        moveTarget,
+        700
+    );
 }
 
 
 function moveTarget() {
 
-    const target = document.getElementById("target");
+    const target =
+        document.getElementById("target");
 
-    const maxX = window.innerWidth - 120;
-    const maxY = window.innerHeight - 180;
+    const x =
+        Math.random() *
+        (window.innerWidth - 100);
 
-    const x = Math.random() * maxX;
-    const y = 120 + Math.random() * Math.max(100, maxY - 120);
+    const y =
+        150 +
+        Math.random() *
+        (window.innerHeight - 250);
 
     target.style.left = x + "px";
     target.style.top = y + "px";
 }
 
 
-/* =========================================
+/* =====================================
    GAME 2
-========================================= */
+===================================== */
 
-function startGame2() {
+function game2() {
 
-    const container = document.getElementById("redButtons");
-
-    container.innerHTML = "";
-
-    for (let i = 0; i < 6; i++) {
-
-        const button = document.createElement("button");
-
-        button.textContent = "SAFE ✅";
-        button.className = "safe choice";
-
-        button.onclick = () => {
-
-            if (!gameRunning) return;
-
-            score += 100;
-            scoreDisplay.textContent = score;
-
-            createRedButtons();
-        };
-
-        container.appendChild(button);
-    }
-
-    createRedButtons();
+    createButtons2();
 }
 
 
-function createRedButtons() {
+function createButtons2() {
 
-    const container = document.getElementById("redButtons");
+    const container =
+        document.getElementById("buttons2");
 
     container.innerHTML = "";
 
-    const redPosition = Math.floor(Math.random() * 6);
+    const redPosition =
+        Math.floor(Math.random() * 6);
 
     for (let i = 0; i < 6; i++) {
 
-        const button = document.createElement("button");
-
-        button.className = "choice";
+        const button =
+            document.createElement("button");
 
         if (i === redPosition) {
 
-            button.textContent = "RED ❌";
-            button.classList.add("red");
+            button.textContent = "🔴 RED";
 
-            button.onclick = () => {
+            button.className = "red";
 
-                if (!gameRunning) return;
+            button.onclick = function() {
 
-                loseLife();
+                alert("❌ You clicked RED!");
+
+                createButtons2();
             };
 
         } else {
 
-            button.textContent = "SAFE ✅";
-            button.classList.add("safe");
+            button.textContent = "🟢 SAFE";
 
-            button.onclick = () => {
+            button.className = "safe";
 
-                if (!gameRunning) return;
+            button.onclick = function() {
 
                 score += 100;
 
-                scoreDisplay.textContent = score;
+                document.getElementById("score")
+                    .textContent = score;
 
-                createRedButtons();
+                createButtons2();
             };
         }
 
@@ -580,17 +455,11 @@ function createRedButtons() {
 }
 
 
-/* =========================================
+/* =====================================
    GAME 3
-========================================= */
+===================================== */
 
-let pattern = [];
-let playerPattern = [];
-
-const emojis = ["🍎", "🍌", "🍓", "🍇"];
-
-
-function startGame3() {
+function game3() {
 
     pattern = [];
     playerPattern = [];
@@ -601,396 +470,316 @@ function startGame3() {
 
 function nextPattern() {
 
-    playerPattern = [];
+    const emojis = [
+        "🍎",
+        "🍌",
+        "🍓",
+        "🍇"
+    ];
 
     pattern.push(
-        emojis[Math.floor(Math.random() * emojis.length)]
+        emojis[
+            Math.floor(
+                Math.random() * emojis.length
+            )
+        ]
     );
 
-    const display = document.getElementById("patternDisplay");
-    const buttons = document.getElementById("patternButtons");
-    const instruction = document.getElementById("patternInstruction");
+    playerPattern = [];
 
-    buttons.innerHTML = "";
+    document.getElementById("patternDisplay")
+        .textContent =
+        pattern.join(" ");
 
-    display.textContent = pattern.join(" ");
+    document.getElementById("patternMessage")
+        .textContent =
+        "👀 WATCH!";
 
-    instruction.textContent = "👀 WATCH!";
+    document.getElementById("patternButtons")
+        .innerHTML = "";
 
-    setTimeout(() => {
+    setTimeout(function() {
 
-        if (!gameRunning || currentGame !== 3) return;
+        document.getElementById("patternDisplay")
+            .textContent = "❓";
 
-        display.textContent = "❓";
+        document.getElementById("patternMessage")
+            .textContent =
+            "YOUR TURN!";
 
-        instruction.textContent = "YOUR TURN!";
+        emojis.forEach(function(emoji) {
 
-        emojis.forEach(emoji => {
-
-            const button = document.createElement("button");
+            const button =
+                document.createElement("button");
 
             button.textContent = emoji;
 
-            button.onclick = () => {
-
-                if (!gameRunning) return;
+            button.onclick = function() {
 
                 playerPattern.push(emoji);
 
-                display.textContent = playerPattern.join(" ");
+                const index =
+                    playerPattern.length - 1;
 
-                const index = playerPattern.length - 1;
+                if (
+                    playerPattern[index]
+                    !==
+                    pattern[index]
+                ) {
 
-                if (playerPattern[index] !== pattern[index]) {
-
-                    loseLife();
+                    alert("❌ Wrong Pattern!");
 
                     pattern = [];
-                    playerPattern = [];
 
-                    setTimeout(() => {
-
-                        if (gameRunning && currentGame === 3) {
-                            nextPattern();
-                        }
-
-                    }, 500);
+                    nextPattern();
 
                     return;
                 }
 
-                if (playerPattern.length === pattern.length) {
+                if (
+                    playerPattern.length
+                    ===
+                    pattern.length
+                ) {
 
-                    score += pattern.length * 100;
+                    score +=
+                        pattern.length * 100;
 
-                    scoreDisplay.textContent = score;
+                    document.getElementById("score")
+                        .textContent = score;
 
-                    setTimeout(() => {
-
-                        if (gameRunning && currentGame === 3) {
-                            nextPattern();
-                        }
-
-                    }, 500);
+                    setTimeout(
+                        nextPattern,
+                        500
+                    );
                 }
             };
 
-            buttons.appendChild(button);
+            document.getElementById(
+                "patternButtons"
+            ).appendChild(button);
+
         });
 
-    }, 1500);
+    }, 1200);
 }
 
 
-/* =========================================
-   GAME 4 — CHAOS MODE
-========================================= */
+/* =====================================
+   GAME 4
+===================================== */
 
-const chaosColors = [
-    {
-        name: "RED",
-        emoji: "🔴"
-    },
-    {
-        name: "BLUE",
-        emoji: "🔵"
-    },
-    {
-        name: "GREEN",
-        emoji: "🟢"
-    },
-    {
-        name: "YELLOW",
-        emoji: "🟡"
-    }
-];
+function game4() {
 
-let chaosAnswer = "";
-let chaosRound = 0;
-
-
-function startGame4() {
-
-    chaosRound = 0;
-
-    nextChaosRound();
+    nextChaos();
 }
 
 
-function nextChaosRound() {
+function nextChaos() {
 
-    if (!gameRunning || currentGame !== 4) return;
-
-    chaosRound++;
+    const colors = [
+        ["🔴", "RED"],
+        ["🔵", "BLUE"],
+        ["🟢", "GREEN"],
+        ["🟡", "YELLOW"]
+    ];
 
     const answer =
-        chaosColors[Math.floor(Math.random() * chaosColors.length)];
+        colors[
+            Math.floor(
+                Math.random() * colors.length
+            )
+        ];
 
-    chaosAnswer = answer.name;
+    document.getElementById("chaosQuestion")
+        .textContent =
+        "CLICK " +
+        answer[0] +
+        " " +
+        answer[1];
 
-    const question =
-        document.getElementById("chaosQuestion");
-
-    const buttons =
+    const container =
         document.getElementById("chaosButtons");
 
-    question.textContent =
-        "CLICK " + answer.emoji + " " + answer.name;
+    container.innerHTML = "";
 
-    buttons.innerHTML = "";
+    colors.sort(
+        () => Math.random() - 0.5
+    );
 
-    let choices = [...chaosColors];
+    colors.forEach(function(color) {
 
-    choices.sort(() => Math.random() - 0.5);
-
-    choices.forEach(color => {
-
-        const button = document.createElement("button");
+        const button =
+            document.createElement("button");
 
         button.textContent =
-            color.emoji + " " + color.name;
+            color[0] +
+            " " +
+            color[1];
 
-        button.onclick = () => {
+        button.onclick = function() {
 
-            if (!gameRunning || currentGame !== 4) return;
+            if (color[1] === answer[1]) {
 
-            if (color.name === chaosAnswer) {
+                score += 100;
 
-                score += 100 + chaosRound * 25;
-
-                scoreDisplay.textContent = score;
-
-                nextChaosRound();
+                document.getElementById("score")
+                    .textContent = score;
 
             } else {
 
-                loseLife();
-
-                nextChaosRound();
+                alert("❌ WRONG!");
             }
+
+            nextChaos();
         };
 
-        buttons.appendChild(button);
+        container.appendChild(button);
     });
-
-    clearTimeout(roundTimer);
-
-    const speed = Math.max(700, 1800 - chaosRound * 70);
-
-    roundTimer = setTimeout(() => {
-
-        if (!gameRunning || currentGame !== 4) return;
-
-        loseLife();
-
-        nextChaosRound();
-
-    }, speed);
 }
 
 
-/* =========================================
-   GAME 5 — SAVE THE WORLD
-========================================= */
+/* =====================================
+   GAME 5
+===================================== */
 
-const disasters = [
+function game5() {
 
-    ["☄️ METEOR INCOMING!", "ROCKET", "🚀 LAUNCH!"],
-
-    ["🤖 AI ESCAPED!", "AI", "🤖 STOP IT!"],
-
-    ["⚡ POWER CRITICAL!", "POWER", "⚡ FIX IT!"],
-
-    ["☢️ NUCLEAR MELTDOWN!", "NUKE", "☢️ SHUT IT DOWN!"],
-
-    ["👽 ALIENS ATTACK!", "ROCKET", "🚀 DEFEND EARTH!"],
-
-    ["🌊 GIANT WAVE!", "ROCKET", "🚀 ESCAPE!"]
-
-];
-
-let worldAnswer = "";
-let worldRound = 0;
-
-
-function startGame5() {
-
-    worldRound = 0;
-
-    nextWorldRound();
+    nextWorld();
 }
 
 
-function nextWorldRound() {
+function nextWorld() {
 
-    if (!gameRunning || currentGame !== 5) return;
+    const disasters = [
 
-    worldRound++;
+        ["☄️ METEOR!", "ROCKET"],
+
+        ["🤖 AI ESCAPED!", "AI"],
+
+        ["⚡ POWER FAILURE!", "POWER"],
+
+        ["☢️ NUCLEAR ALERT!", "NUKE"],
+
+        ["👽 ALIEN ATTACK!", "ROCKET"]
+
+    ];
 
     const disaster =
-        disasters[Math.floor(Math.random() * disasters.length)];
+        disasters[
+            Math.floor(
+                Math.random() *
+                disasters.length
+            )
+        ];
 
-    worldAnswer = disaster[1];
+    document.getElementById("worldQuestion")
+        .textContent =
+        disaster[0];
 
-    const question =
-        document.getElementById("worldQuestion");
-
-    const buttons =
+    const container =
         document.getElementById("worldButtons");
 
-    question.textContent = disaster[0];
-
-    buttons.innerHTML = "";
+    container.innerHTML = "";
 
     const choices = [
         "ROCKET",
         "AI",
         "POWER",
         "NUKE",
-        "HIDE",
-        "RUN"
+        "HIDE"
     ];
 
-    choices.sort(() => Math.random() - 0.5);
+    choices.sort(
+        () => Math.random() - 0.5
+    );
 
-    choices.forEach(choice => {
+    choices.forEach(function(choice) {
 
-        const button = document.createElement("button");
+        const button =
+            document.createElement("button");
 
         button.textContent = choice;
 
-        button.onclick = () => {
+        button.onclick = function() {
 
-            if (!gameRunning || currentGame !== 5) return;
-
-            if (choice === worldAnswer) {
+            if (choice === disaster[1]) {
 
                 score += 200;
 
-                scoreDisplay.textContent = score;
-
-                question.textContent = disaster[2];
-
-                setTimeout(() => {
-
-                    if (gameRunning && currentGame === 5) {
-                        nextWorldRound();
-                    }
-
-                }, 350);
+                document.getElementById("score")
+                    .textContent = score;
 
             } else {
 
-                loseLife();
-
-                nextWorldRound();
+                alert("❌ WRONG CHOICE!");
             }
+
+            nextWorld();
         };
 
-        buttons.appendChild(button);
+        container.appendChild(button);
     });
-
-    clearTimeout(roundTimer);
-
-    roundTimer = setTimeout(() => {
-
-        if (!gameRunning || currentGame !== 5) return;
-
-        score += 150;
-
-        scoreDisplay.textContent = score;
-
-        question.textContent = "⏰ TOO SLOW!";
-
-        setTimeout(() => {
-
-            if (gameRunning && currentGame === 5) {
-                nextWorldRound();
-            }
-
-        }, 350);
-
-    }, 1500);
 }
 
 
-/* =========================================
-   GAME 6 — GLAM PANIC
-========================================= */
+/* =====================================
+   GAME 6
+===================================== */
 
-const glamChallenges = [
+function game6() {
 
-    ["💇‍♀️ HAIR EMERGENCY!", "HAIR"],
+    combo = 0;
 
-    ["💅 NAIL DISASTER!", "NAILS"],
-
-    ["👗 OUTFIT CRISIS!", "OUTFIT"],
-
-    ["👜 BAG CHECK!", "BAG"],
-
-    ["👠 SHOE EMERGENCY!", "SHOES"],
-
-    ["📸 PHOTO SHOOT!", "CAMERA"]
-
-];
-
-
-function startGame6() {
-
-    glamRound = 0;
-
-    glamCombo = 0;
-
-    glamFinal = false;
-
-    document.getElementById("glamCombo").textContent =
+    document.getElementById("combo")
+        .textContent =
         "🔥 Combo: 0";
 
-    nextGlamChallenge();
+    nextGlam();
 }
 
 
-/* =========================================
-   GLAM CHALLENGE
-========================================= */
+function nextGlam() {
 
-function nextGlamChallenge() {
+    const challenges = [
 
-    if (!gameRunning || currentGame !== 6) return;
+        ["💇 HAIR EMERGENCY!", "HAIR"],
 
-    glamRound++;
+        ["💅 NAIL DISASTER!", "NAILS"],
 
-    if (glamRound >= 8) {
+        ["👗 OUTFIT CRISIS!", "OUTFIT"],
 
-        startGlamFinal();
+        ["👜 BAG CHECK!", "BAG"],
 
-        return;
-    }
+        ["👠 SHOE EMERGENCY!", "SHOES"],
+
+        ["📸 PHOTO SHOOT!", "CAMERA"]
+
+    ];
 
     const challenge =
-        glamChallenges[
-            Math.floor(Math.random() * glamChallenges.length)
+        challenges[
+            Math.floor(
+                Math.random() *
+                challenges.length
+            )
         ];
 
-    glamAnswer = challenge[1];
+    const answer =
+        challenge[1];
 
-    const question =
-        document.getElementById("glamQuestion");
+    document.getElementById("glamQuestion")
+        .textContent =
+        challenge[0];
 
-    const buttons =
+    document.getElementById("glamTimer")
+        .textContent =
+        "2.0";
+
+    const container =
         document.getElementById("glamButtons");
 
-    /* IMPORTANT:
-       This is the DISPLAY element.
-       It is NOT the timer variable.
-    */
-
-    const glamTimerDisplay =
-        document.getElementById("glamTimer");
-
-    question.textContent = challenge[0];
-
-    buttons.innerHTML = "";
+    container.innerHTML = "";
 
     const choices = [
         "HAIR",
@@ -1001,163 +790,130 @@ function nextGlamChallenge() {
         "CAMERA"
     ];
 
-    choices.sort(() => Math.random() - 0.5);
+    choices.sort(
+        () => Math.random() - 0.5
+    );
 
-    choices.forEach(choice => {
+    choices.forEach(function(choice) {
 
-        const button = document.createElement("button");
+        const button =
+            document.createElement("button");
 
         button.textContent = choice;
 
-        button.onclick = () => {
-
-            if (!gameRunning || currentGame !== 6) return;
+        button.onclick = function() {
 
             clearTimeout(glamTimer);
 
-            if (choice === glamAnswer) {
+            if (choice === answer) {
 
-                glamCombo++;
+                combo++;
 
-                score += 150 + glamCombo * 50;
+                score +=
+                    150 +
+                    combo * 50;
 
-                scoreDisplay.textContent = score;
+                document.getElementById("score")
+                    .textContent = score;
 
-                document.getElementById("glamCombo").textContent =
-                    "🔥 Combo: " + glamCombo;
+                document.getElementById("combo")
+                    .textContent =
+                    "🔥 Combo: " + combo;
 
-                question.textContent = "✨ PERFECT!";
-
-                setTimeout(() => {
-
-                    if (gameRunning && currentGame === 6) {
-                        nextGlamChallenge();
-                    }
-
-                }, 250);
+                nextGlam();
 
             } else {
 
-                glamFail();
+                combo = 0;
+
+                document.getElementById("combo")
+                    .textContent =
+                    "🔥 Combo: 0";
+
+                alert("❌ WRONG!");
+
+                nextGlam();
             }
         };
 
-        buttons.appendChild(button);
+        container.appendChild(button);
     });
 
 
-    /* Faster every round */
+    let remaining = 2.0;
 
-    const speed =
-        Math.max(650, 1700 - glamRound * 120);
+    glamTimer =
+        setInterval(function() {
 
-    let countdown = speed / 1000;
+            remaining -= 0.1;
 
-    glamTimerDisplay.textContent =
-        countdown.toFixed(1);
+            document.getElementById("glamTimer")
+                .textContent =
+                Math.max(
+                    0,
+                    remaining
+                ).toFixed(1);
 
-    clearTimeout(glamTimer);
+            if (remaining <= 0) {
 
-    glamTimer = setInterval(() => {
+                clearInterval(glamTimer);
 
-        countdown -= 0.1;
+                combo = 0;
 
-        glamTimerDisplay.textContent =
-            Math.max(0, countdown).toFixed(1);
+                document.getElementById("combo")
+                    .textContent =
+                    "🔥 Combo: 0";
 
-    }, 100);
+                nextGlam();
+            }
 
-
-    setTimeout(() => {
-
-        if (!gameRunning || currentGame !== 6) return;
-
-        clearInterval(glamTimer);
-
-        glamFail();
-
-    }, speed);
+        }, 100);
 }
 
 
-/* =========================================
-   GLAM FAIL
-========================================= */
+/* =====================================
+   CLEAR TIMERS
+===================================== */
 
-function glamFail() {
+function clearAllTimers() {
 
-    if (!gameRunning || currentGame !== 6) return;
+    clearInterval(gameTimer);
+
+    clearInterval(gameInterval);
 
     clearInterval(glamTimer);
 
-    glamCombo = 0;
+    gameTimer = null;
+    gameInterval = null;
+    glamTimer = null;
 
-    document.getElementById("glamCombo").textContent =
-        "🔥 Combo: 0";
-
-    loseLife();
-
-    if (gameRunning && currentGame === 6) {
-
-        setTimeout(() => {
-
-            nextGlamChallenge();
-
-        }, 300);
-    }
+    document.getElementById("target")
+        .style.display = "none";
 }
 
 
-/* =========================================
-   GLAM FINAL BOSS
-========================================= */
+/* =====================================
+   BACK TO MENU
+===================================== */
 
-function startGlamFinal() {
+function backToMenu() {
 
-    if (!gameRunning || currentGame !== 6) return;
+    clearAllTimers();
 
-    glamFinal = true;
+    document.getElementById("gameScreen")
+        .style.display = "none";
 
-    const question =
-        document.getElementById("glamQuestion");
+    document.getElementById("menu")
+        .style.display = "block";
 
-    const buttons =
-        document.getElementById("glamButtons");
+    document.querySelectorAll(".game")
+        .forEach(function(game) {
+            game.classList.remove("active");
+        });
+}
 
-    const glamTimerDisplay =
-        document.getElementById("glamTimer");
+</script>
 
-    question.textContent =
-        "👑 FINAL BOSS: CREATE THE PERFECT OUTFIT!";
-
-    buttons.innerHTML = "";
-
-    const choices = [
-        "HAIR",
-        "NAILS",
-        "OUTFIT",
-        "BAG",
-        "SHOES",
-        "CAMERA"
-    ];
-
-    choices.sort(() => Math.random() - 0.5);
-
-    choices.forEach(choice => {
-
-        const button = document.createElement("button");
-
-        button.textContent = choice;
-
-        button.onclick = () => {
-
-            if (!gameRunning || currentGame !== 6) return;
-
-            clearInterval(glamTimer);
-
-            if (choice === "OUTFIT") {
-
-                score += 1000;
-
-                scoreDisplay.textContent = score
+</body>
+</html>
 ```
