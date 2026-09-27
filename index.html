@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,13 @@
     <title>WarioWare AI</title>
 
     <style>
+
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             background: #111;
             color: white;
-            padding: 30px 20px;
+            padding: 25px 15px;
         }
 
         h1 {
@@ -20,15 +22,16 @@
         }
 
         #challenge {
-            font-size: 30px;
+            font-size: 28px;
             margin: 25px 0;
         }
 
         #timer,
         #score,
-        #lives {
-            font-size: 24px;
-            margin: 12px;
+        #lives,
+        #level {
+            font-size: 22px;
+            margin: 10px;
         }
 
         #gameArea {
@@ -36,186 +39,441 @@
             width: 90%;
             max-width: 700px;
             height: 350px;
+
             margin: 30px auto;
+
             border: 3px solid white;
             border-radius: 15px;
+
             background: #222;
+
             overflow: hidden;
         }
 
-        button {
+        #startButton {
             padding: 15px 30px;
+
             font-size: 20px;
+
             cursor: pointer;
+
             border: none;
             border-radius: 10px;
         }
 
         #target {
             display: none;
+
             position: absolute;
+
             width: 70px;
             height: 70px;
+
             border-radius: 50%;
+
             font-size: 30px;
+
             padding: 0;
+
+            border: none;
+
+            cursor: pointer;
         }
+
     </style>
+
 </head>
 
 <body>
 
     <h1>🎮 WarioWare AI</h1>
 
-    <p id="challenge">Welcome to the mini-game challenge!</p>
+    <p id="challenge">
+        Welcome to the mini-game challenge!
+    </p>
 
-    <p id="timer">⏱️ Time: 5</p>
+    <p id="timer">
+        ⏱️ Time: 5
+    </p>
 
-    <p id="score">🏆 Score: 0</p>
+    <p id="score">
+        🏆 Score: 0
+    </p>
 
-    <p id="lives">❤️ Lives: 3</p>
+    <p id="lives">
+        ❤️ Lives: 3
+    </p>
 
-    <button id="startButton">START GAME</button>
+    <p id="level">
+        ⭐ Level: 1
+    </p>
+
+    <button id="startButton">
+        START GAME
+    </button>
 
     <div id="gameArea">
-        <button id="target">🎯</button>
+
+        <button id="target">
+            🎯
+        </button>
+
     </div>
+
 
     <script>
 
+        // GAME VARIABLES
+
         let timeLeft = 5;
+
         let score = 0;
+
         let lives = 3;
-        let gameTimer;
+
+        let level = 1;
+
         let gameRunning = false;
 
-        const challenge = document.getElementById("challenge");
-        const timer = document.getElementById("timer");
-        const scoreDisplay = document.getElementById("score");
-        const livesDisplay = document.getElementById("lives");
-        const startButton = document.getElementById("startButton");
-        const target = document.getElementById("target");
-        const gameArea = document.getElementById("gameArea");
+        let gameTimer;
+
+        let moveTimer;
+
+
+        // GET HTML ELEMENTS
+
+        const challenge =
+            document.getElementById("challenge");
+
+        const timer =
+            document.getElementById("timer");
+
+        const scoreDisplay =
+            document.getElementById("score");
+
+        const livesDisplay =
+            document.getElementById("lives");
+
+        const levelDisplay =
+            document.getElementById("level");
+
+        const startButton =
+            document.getElementById("startButton");
+
+        const target =
+            document.getElementById("target");
+
+        const gameArea =
+            document.getElementById("gameArea");
+
+
+        // MOVE TARGET
 
         function moveTarget() {
 
-            const maxX = gameArea.clientWidth - target.offsetWidth;
-            const maxY = gameArea.clientHeight - target.offsetHeight;
+            const maxX =
+                gameArea.clientWidth -
+                target.offsetWidth;
 
-            const randomX = Math.floor(Math.random() * maxX);
-            const randomY = Math.floor(Math.random() * maxY);
+            const maxY =
+                gameArea.clientHeight -
+                target.offsetHeight;
 
-            target.style.left = randomX + "px";
-            target.style.top = randomY + "px";
+            const randomX =
+                Math.floor(Math.random() * maxX);
+
+            const randomY =
+                Math.floor(Math.random() * maxY);
+
+            target.style.left =
+                randomX + "px";
+
+            target.style.top =
+                randomY + "px";
         }
+
+
+        // START GAME
+
+        startButton.addEventListener(
+            "click",
+            function () {
+
+                if (gameRunning) {
+                    return;
+                }
+
+
+                // RESET GAME
+
+                timeLeft = 5;
+
+                score = 0;
+
+                lives = 3;
+
+                level = 1;
+
+                gameRunning = true;
+
+
+                // UPDATE DISPLAY
+
+                timer.textContent =
+                    "⏱️ Time: 5";
+
+                scoreDisplay.textContent =
+                    "🏆 Score: 0";
+
+                livesDisplay.textContent =
+                    "❤️ Lives: 3";
+
+                levelDisplay.textContent =
+                    "⭐ Level: 1";
+
+
+                challenge.textContent =
+                    "🎯 CLICK THE TARGET!";
+
+
+                startButton.textContent =
+                    "GAME RUNNING...";
+
+
+                target.style.display =
+                    "block";
+
+
+                moveTarget();
+
+
+                // CLEAR OLD TIMERS
+
+                clearInterval(gameTimer);
+
+                clearInterval(moveTimer);
+
+
+                // TARGET MOVEMENT
+
+                moveTimer =
+                    setInterval(
+                        function () {
+
+                            if (gameRunning) {
+
+                                moveTarget();
+
+                            }
+
+                        },
+                        700
+                    );
+
+
+                // COUNTDOWN
+
+                gameTimer =
+                    setInterval(
+                        function () {
+
+                            timeLeft--;
+
+                            timer.textContent =
+                                "⏱️ Time: " +
+                                timeLeft;
+
+
+                            if (timeLeft <= 0) {
+
+                                endGame(
+                                    "💥 TIME'S UP! FINAL SCORE: " +
+                                    score
+                                );
+
+                            }
+
+                        },
+                        1000
+                    );
+
+            }
+        );
+
+
+        // TARGET CLICK
+
+        target.addEventListener(
+            "click",
+            function () {
+
+                if (!gameRunning) {
+                    return;
+                }
+
+
+                // ADD SCORE
+
+                score += 100;
+
+
+                scoreDisplay.textContent =
+                    "🏆 Score: " +
+                    score;
+
+
+                challenge.textContent =
+                    "🔥 NICE! +100";
+
+
+                // LEVEL 2
+
+                if (
+                    score >= 500 &&
+                    level === 1
+                ) {
+
+                    level = 2;
+
+                    levelDisplay.textContent =
+                        "⭐ Level: 2";
+
+                    challenge.textContent =
+                        "🔥 LEVEL 2! FASTER!";
+
+
+                    clearInterval(moveTimer);
+
+
+                    moveTimer =
+                        setInterval(
+                            function () {
+
+                                if (gameRunning) {
+
+                                    moveTarget();
+
+                                }
+
+                            },
+                            450
+                        );
+                }
+
+
+                // LEVEL 3
+
+                if (
+                    score >= 1000 &&
+                    level === 2
+                ) {
+
+                    level = 3;
+
+                    levelDisplay.textContent =
+                        "⭐ Level: 3";
+
+                    challenge.textContent =
+                        "💀 LEVEL 3! SUPER FAST!";
+
+
+                    clearInterval(moveTimer);
+
+
+                    moveTimer =
+                        setInterval(
+                            function () {
+
+                                if (gameRunning) {
+
+                                    moveTarget();
+
+                                }
+
+                            },
+                            250
+                        );
+                }
+
+
+                // MOVE TARGET
+
+                moveTarget();
+
+            }
+        );
+
+
+        // MISSED TARGET
+
+        gameArea.addEventListener(
+            "click",
+            function (event) {
+
+                if (!gameRunning) {
+                    return;
+                }
+
+
+                // Ignore target clicks
+
+                if (event.target === target) {
+                    return;
+                }
+
+
+                lives--;
+
+
+                livesDisplay.textContent =
+                    "❤️ Lives: " +
+                    lives;
+
+
+                challenge.textContent =
+                    "❌ MISSED! -1 LIFE";
+
+
+                if (lives <= 0) {
+
+                    endGame(
+                        "💀 GAME OVER! FINAL SCORE: " +
+                        score
+                    );
+
+                }
+
+            }
+        );
+
+
+        // END GAME
 
         function endGame(message) {
 
             clearInterval(gameTimer);
 
+            clearInterval(moveTimer);
+
+
             gameRunning = false;
 
-            target.style.display = "none";
 
-            challenge.textContent = message;
+            target.style.display =
+                "none";
 
-            startButton.textContent = "PLAY AGAIN";
-        }
-
-        startButton.addEventListener("click", function () {
-
-            if (gameRunning) {
-                return;
-            }
-
-            timeLeft = 5;
-            score = 0;
-            lives = 3;
-
-            gameRunning = true;
-
-            timer.textContent = "⏱️ Time: 5";
-            scoreDisplay.textContent = "🏆 Score: 0";
-            livesDisplay.textContent = "❤️ Lives: 3";
 
             challenge.textContent =
-                "🎯 CLICK THE TARGET!";
+                message;
+
 
             startButton.textContent =
-                "GAME RUNNING...";
+                "PLAY AGAIN";
 
-            target.style.display = "block";
-
-            moveTarget();
-
-            clearInterval(gameTimer);
-
-            gameTimer = setInterval(function () {
-
-                timeLeft--;
-
-                timer.textContent =
-                    "⏱️ Time: " + timeLeft;
-
-                if (timeLeft <= 0) {
-
-                    endGame(
-                        "💥 TIME'S UP! FINAL SCORE: " + score
-                    );
-
-                }
-
-            }, 1000);
-
-        });
-
-        target.addEventListener("click", function () {
-
-            if (!gameRunning) {
-                return;
-            }
-
-            score += 100;
-
-            scoreDisplay.textContent =
-                "🏆 Score: " + score;
-
-            challenge.textContent =
-                "🔥 NICE! +100";
-
-            moveTarget();
-
-        });
-
-        gameArea.addEventListener("click", function (event) {
-
-            if (!gameRunning) {
-                return;
-            }
-
-            if (event.target === target) {
-                return;
-            }
-
-            lives--;
-
-            livesDisplay.textContent =
-                "❤️ Lives: " + lives;
-
-            challenge.textContent =
-                "❌ MISSED! -1 LIFE";
-
-            if (lives <= 0) {
-
-                endGame(
-                    "💀 GAME OVER! FINAL SCORE: " + score
-                );
-
-            }
-
-        });
+        }
 
     </script>
 
 </body>
+
 </html>
