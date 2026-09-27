@@ -6,47 +6,160 @@
   <title>WarioWare AI</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      background: #111;
+      min-height: 100vh;
+      background: #090909;
       color: white;
       font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #home {
       text-align: center;
-      padding-top: 100px;
+    }
+
+    .logo {
+      font-size: 70px;
+      font-weight: 900;
+      letter-spacing: -4px;
+      color: #ffd400;
+      text-shadow: 6px 6px 0 #ff3b30;
+    }
+
+    .subtitle {
+      font-size: 20px;
+      letter-spacing: 5px;
+      color: #aaa;
+      margin-bottom: 45px;
     }
 
     button {
-      font-size: 25px;
-      padding: 20px 50px;
-      border: none;
-      border-radius: 15px;
-      cursor: pointer;
       background: #ffd400;
+      color: #111;
+      border: none;
+      padding: 20px 55px;
+      border-radius: 12px;
+      font-size: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 8px 0 #a88900;
     }
 
-    #game {
+    button:hover {
+      transform: translateY(-3px);
+    }
+
+    button:active {
+      transform: translateY(5px);
+      box-shadow: 0 3px 0 #a88900;
+    }
+
+    #arcade {
       display: none;
+      width: 95%;
+      max-width: 900px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .score {
+      color: #ffd400;
+    }
+
+    .lives {
+      color: #ff4d4d;
+    }
+
+    .arena {
+      min-height: 500px;
+      border: 5px solid white;
+      border-radius: 20px;
+      background: #181818;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .message {
+      text-align: center;
+    }
+
+    .message h1 {
+      font-size: 45px;
+      margin: 10px;
+    }
+
+    .message p {
+      color: #aaa;
+      font-size: 18px;
+    }
+
+    .timer {
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 30px;
+      font-weight: bold;
     }
   </style>
 </head>
 
 <body>
 
+  <!-- HOME -->
   <div id="home">
-    <h1>WARIOWARE AI</h1>
-    <p>ARE YOU READY?</p>
+
+    <div class="logo">WARIOWARE</div>
+
+    <div class="subtitle">AI MICROGAME CHAOS</div>
 
     <button onclick="
       document.getElementById('home').style.display='none';
-      document.getElementById('game').style.display='block';
+      document.getElementById('arcade').style.display='block';
     ">
       START CHAOS
     </button>
+
   </div>
 
-  <div id="game">
-    <h1>🔥 GAME STARTED! 🔥</h1>
-    <p>Your WarioWare game is working.</p>
+
+  <!-- ARCADE -->
+  <div id="arcade">
+
+    <div class="topbar">
+      <div class="score">SCORE: 0000</div>
+      <div>ROUND: 1</div>
+      <div class="lives">♥ ♥ ♥</div>
+    </div>
+
+    <div class="arena">
+
+      <div class="timer">⚡ 5</div>
+
+      <div class="message">
+        <h1>GET READY!</h1>
+        <p>Your first micro-game is coming...</p>
+      </div>
+
+    </div>
+
   </div>
 
 </body>
