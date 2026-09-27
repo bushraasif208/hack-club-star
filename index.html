@@ -6,9 +6,7 @@
   <title>WarioWare AI</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -88,7 +86,15 @@
       align-items: center;
       position: relative;
       overflow: hidden;
-      cursor: default;
+    }
+
+    .timer {
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 30px;
+      font-weight: bold;
     }
 
     .message {
@@ -103,15 +109,6 @@
     .message p {
       color: #aaa;
       font-size: 20px;
-    }
-
-    .timer {
-      position: absolute;
-      top: 15px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 30px;
-      font-weight: bold;
     }
 
     #reactionButton {
@@ -131,267 +128,34 @@
       transform: scale(0.95);
     }
 
+    #grid {
+      display: none;
+      width: 420px;
+      height: 420px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .tile {
+      border: none;
+      border-radius: 10px;
+      background: #4b8cff;
+      color: white;
+      font-size: 35px;
+      cursor: pointer;
+      box-shadow: none;
+      padding: 0;
+    }
+
+    .tile:hover {
+      transform: scale(1.04);
+    }
+
     #result {
       display: none;
       text-align: center;
     }
 
     #result h1 {
-      font-size: 50px;
-    }
-  </style>
-</head>
-
-<body>
-
-  <!-- HOME -->
-
-  <div id="home">
-
-    <div class="logo">WARIOWARE</div>
-
-    <div class="subtitle">AI MICROGAME CHAOS</div>
-
-    <button onclick="startGame()">
-      START CHAOS
-    </button>
-
-  </div>
-
-
-  <!-- ARCADE -->
-
-  <div id="arcade">
-
-    <div class="topbar">
-
-      <div class="score">
-        SCORE: <span id="score">0000</span>
-      </div>
-
-      <div>
-        ROUND: 1
-      </div>
-
-      <div class="lives">
-        ♥ ♥ ♥
-      </div>
-
-    </div>
-
-
-    <div class="arena" id="arena">
-
-      <div class="timer" id="timer">
-        3
-      </div>
-
-      <div class="message" id="message">
-
-        <h1>GET READY!</h1>
-
-        <p>Prepare yourself...</p>
-
-      </div>
-
-
-      <button id="reactionButton">
-        CLICK!
-      </button>
-
-
-      <div id="result">
-
-        <h1 id="resultTitle"></h1>
-
-        <p id="resultText"></p>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-<script>
-
-let score = 0;
-
-let reactionStart = 0;
-
-let gameTimer;
-
-
-function startGame() {
-
-  document.getElementById("home").style.display = "none";
-
-  document.getElementById("arcade").style.display = "block";
-
-  startReaction();
-
-}
-
-
-function startReaction() {
-
-  const message = document.getElementById("message");
-
-  const button = document.getElementById("reactionButton");
-
-  const result = document.getElementById("result");
-
-  const timer = document.getElementById("timer");
-
-
-  message.style.display = "block";
-
-  button.style.display = "none";
-
-  result.style.display = "none";
-
-
-  message.innerHTML = `
-
-    <h1>WAIT...</h1>
-
-    <p>Don't click yet.</p>
-
-  `;
-
-
-  timer.innerText = "3";
-
-
-  setTimeout(() => {
-
-    timer.innerText = "2";
-
-  }, 700);
-
-
-  setTimeout(() => {
-
-    timer.innerText = "1";
-
-  }, 1400);
-
-
-  setTimeout(() => {
-
-    timer.innerText = "";
-
-    message.innerHTML = `
-
-      <h1>⚡ NOW!</h1>
-
-      <p>CLICK AS FAST AS POSSIBLE!</p>
-
-    `;
-
-
-    button.style.display = "block";
-
-    reactionStart = performance.now();
-
-
-    gameTimer = setTimeout(() => {
-
-      button.style.display = "none";
-
-      showResult(false, 0);
-
-    }, 1500);
-
-  }, 2100);
-
-}
-
-
-document.getElementById("reactionButton").onclick = function() {
-
-  clearTimeout(gameTimer);
-
-
-  const reactionTime = Math.round(
-
-    performance.now() - reactionStart
-
-  );
-
-
-  button = document.getElementById("reactionButton");
-
-  button.style.display = "none";
-
-
-  showResult(true, reactionTime);
-
-};
-
-
-function showResult(success, reactionTime) {
-
-  const message = document.getElementById("message");
-
-  const result = document.getElementById("result");
-
-  const title = document.getElementById("resultTitle");
-
-  const text = document.getElementById("resultText");
-
-
-  message.style.display = "none";
-
-  result.style.display = "block";
-
-
-  if (success) {
-
-    const points = Math.max(
-
-      100,
-
-      1000 - reactionTime
-
-    );
-
-
-    score += points;
-
-
-    document.getElementById("score").innerText =
-
-      String(score).padStart(4, "0");
-
-
-    title.innerText = "🔥 NICE!";
-
-    text.innerText =
-
-      reactionTime + " ms — +" + points + " points";
-
-
-  } else {
-
-    title.innerText = "💀 TOO SLOW!";
-
-    text.innerText = "You missed the window.";
-
-
-  }
-
-
-  setTimeout(() => {
-
-    startReaction();
-
-  }, 1800);
-
-}
-
-</script>
-
-</body>
-</html>
+      font-size: 50px
 ```
